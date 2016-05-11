@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
+import modeleTable.ModeleJTable;
 import static sun.security.jgss.GSSUtil.login;
 
 /**
@@ -34,6 +35,8 @@ public class AppliCPOA {
   
    DataSource laSourceDeDonnees = null;
      Connection laConnexion = null;  
+     
+     ModeleJTable lemodele ;
  
         
        // leDao = new DAOVIP( (Connection) SourceMySQL.getSource( login));
@@ -56,9 +59,11 @@ public class AppliCPOA {
         
         leDao = new DAOVIP(laConnexion);
         
+        lemodele = new ModeleJTable(leDao);
+        
         
         try {
-            FenetrePrincipale fenetre = new FenetrePrincipale(leDao);
+            FenetrePrincipale fenetre = new FenetrePrincipale(leDao,lemodele);
             fenetre.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(AppliCPOA.class.getName()).log(Level.SEVERE, null, ex);

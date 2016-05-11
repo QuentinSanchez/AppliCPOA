@@ -49,7 +49,35 @@ public class DAOVIP {
         
     }
      
-     
+      
+    public void lireVip(List<Vip> listeVip) throws SQLException {    
+        String requete = "select * from VIP";
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        ResultSet rset = pstmt.executeQuery(requete);
+        while (rset.next()) { 
+            
+        int numVip = rset.getInt(1);
+        String nom = rset.getString(2);
+        String prenom = rset.getString(3);
+        String civ = rset.getString(4);
+        String dateNaissance = rset.getString(5);
+        String lieuxNaissance = rset.getString(6);
+        String codeA = rset.getString(7);
+        String codeS = rset.getString(8);
+        String pays = rset.getString(9);
+        
+        Vip temp = new Vip(numVip,nom,prenom,civ,dateNaissance,lieuxNaissance,codeA,codeS,pays);
+        
+        listeVip.add(temp);
+            
+           
+        }
+        rset.close();
+        pstmt.close(); 
+        
+    }
+    
+    
     }
     
 
