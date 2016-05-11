@@ -5,6 +5,7 @@
  */
 package accesAuxDonnees;
 
+import Metier.Vip;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,24 +23,26 @@ public class DAOVIP {
     
     
     
-     public void insererVIP (String numVIP ,String nom, String prenom,String civilite,String dateNaissance,String lieuxNaissance,String codeActeur, String codeStatut, String pays ) throws SQLException
+     public void insererVIP (Vip leVip ) throws SQLException
     {
-       String requete = "insert into vip values (?,?,?,?,?,?,?,?)";
+       String requete = "insert into VIP values (?,?,?,?,?,?,?,?,?)";
        
        PreparedStatement pstm = connexion.prepareStatement(requete);
        
-       pstm.setString(1, numVIP);
-       pstm.setString(2, nom);
-       pstm.setString(3, prenom);
-       pstm.setString(4, civilite);
-       pstm.setString(5, dateNaissance);
-       pstm.setString(6, lieuxNaissance);
-       pstm.setString(7, codeActeur);
-       pstm.setString(8, codeStatut);
-       pstm.setString(9, pays);
+       pstm.setInt(1, leVip.getNumVip());
+       pstm.setString(2, leVip.getNom());
+       pstm.setString(3, leVip.getPrenom());
+       pstm.setString(4,  leVip.getCivilitee());
+       pstm.setString(5,  leVip.getDateNaissance());
+       pstm.setString(6,  leVip.getLieuxNaissance());
+       pstm.setString(7,  leVip.getCodeActeur());
+       pstm.setString(8,  leVip.getCodeStatut());
+       pstm.setString(9,  leVip.getPays());
        
        
        pstm.executeUpdate();
+       
+       pstm.close();
        
         
         
