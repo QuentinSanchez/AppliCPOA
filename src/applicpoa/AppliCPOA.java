@@ -60,6 +60,7 @@ public class AppliCPOA {
         leDao = new DAOVIP(laConnexion);
         
         lemodele = new ModeleJTable(leDao);
+        lemodele.chargerVip();
         
         
         try {

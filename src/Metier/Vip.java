@@ -23,7 +23,7 @@ public class Vip {
     private String lieuxNaissance ;
     private String civilitee ;
 
-    public Vip(int numVip, String nom, String prenom, String dateNaissance, String codeActeur, String codeStatut, String Pays, String lieuxNaissance, String civilitee) {
+    public Vip(int numVip, String nom, String prenom, String civilitee, String dateNaissance, String lieuxNaissance, String codeActeur, String codeStatut, String Pays) {
         this.numVip = numVip;
         this.nom = nom;
         this.prenom = prenom;
@@ -46,6 +46,10 @@ public class Vip {
         this.lieuxNaissance = null;
         this.civilitee = null;
         
+    }
+
+    public Vip(int numVip) {
+        this.numVip = numVip;
     }
 
     

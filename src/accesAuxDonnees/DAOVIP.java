@@ -78,6 +78,24 @@ public class DAOVIP {
     }
     
     
+    public void supprimerVip(Vip leVip) throws SQLException
+    {
+        String requete = " delete from VIP where numVip = ?";
+        
+         PreparedStatement pstmt = connexion.prepareStatement(requete);
+         
+         pstmt.setString(1,String.valueOf(leVip.getNumVip()));
+         
+         pstmt.executeUpdate();
+         pstmt.close();
+         
+         
+        
+        
+        
+    }
+    
+    
     }
     
 

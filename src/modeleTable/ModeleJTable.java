@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import static java.util.Collections.list;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -124,6 +126,45 @@ public class ModeleJTable extends AbstractTableModel{
             leDao.lireVip(this.conteneur );
             
             this.fireTableDataChanged();
+        }
+        
+        
+        public void insererVip ( Vip leVip) throws SQLException
+        {
+            leDao.insererVIP(leVip);
+            
+            
+            this.fireTableDataChanged();
+            
+            
+            
+        }
+        
+          public void supprimerVipTable ( Vip leVip) 
+        {
+        try {
+            leDao.supprimerVip(leVip);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ModeleJTable.class.getName()).log(Level.SEVERE, null, ex); //mettre une fenetre d'erreur
+            
+        }
+        
+       int index = this.conteneur.indexOf(leVip);
+        
+       
+       if (index >= 0)
+       {
+           this.conteneur.remove(index);
+       }
+            
+            
+            
+            
+            this.fireTableDataChanged();
+            
+            
+            
         }
     
 }

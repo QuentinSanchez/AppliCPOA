@@ -57,6 +57,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         btnAjouterVip = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnSupprimer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,6 +71,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jTable1.setModel(lemodele);
         jScrollPane1.setViewportView(jTable1);
 
+        btnSupprimer.setText("supprimer un Vip");
+        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSupprimerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,6 +88,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(134, 134, 134)
+                        .addComponent(btnSupprimer)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -88,7 +98,9 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSupprimer))
                 .addGap(65, 65, 65))
         );
 
@@ -104,7 +116,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         if ( fen.doModal() == true)
         {
             try {
-                leDao.insererVIP(vip);
+                lemodele.insererVIP(vip);
             } catch (SQLException ex) {
                 Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -113,6 +125,25 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnAjouterVipActionPerformed
 
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+       
+        int leNumero = -1 ;
+        
+        Vip vipS = new Vip(leNumero);
+        
+        FenetreSupprimerVip fen = new FenetreSupprimerVip(this, vipS);
+        
+        
+        if(fen.doModal())
+        {
+            
+       
+            
+            
+            lemodele.supprimerVipTable(vipS);
+        }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -120,6 +151,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAjouterVip;
+    private javax.swing.JButton btnSupprimer;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
