@@ -5,12 +5,15 @@
         <group>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/Metier/Vip.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/modeleTable/ModeleJTable.java</file>
+            <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/Metier/Mariage.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/accesAuxDonnees/SourceMySQL.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/accesAuxDonnees/DAOVIP.java</file>
+            <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/modeleComboBox/ComboBoxModele.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/applicpoa/AppliCPOA.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/IHM/FenetreIdentification.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/IHM/FenetrePrincipale.java</file>
             <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/IHM/FenetreAjoutVip.java</file>
+            <file>file:/C:/Users/poncho/Documents/NetBeansProjects/AppliCPOA/src/IHM/FenetreSupprimerVip.java</file>
         </group>
     </open-files>
 </project-private>

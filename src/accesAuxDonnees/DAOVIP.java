@@ -5,12 +5,16 @@
  */
 package accesAuxDonnees;
 
+import Metier.Mariage;
 import Metier.Vip;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
   
 public class DAOVIP {
     
@@ -96,6 +100,138 @@ public class DAOVIP {
     }
     
     
+    public List<String> vipMarié( List<Mariage> listeMariage) 
+    {
+          try {
+              List<String> listeItems = new ArrayList<>() ;
+              
+              String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce = NULL";
+              
+              PreparedStatement pstmt = connexion.prepareStatement(requete);
+              
+              ResultSet rset = pstmt.executeQuery(requete);
+              
+              int i = 0;
+              
+              while (rset.next()) {
+                  
+                  
+                
+                  
+                  if ( i%2 == 0)
+                  {
+                      
+                       listeItems.add(rset.getString(1).concat("-"+String.valueOf(rset.getInt(2))));
+                      
+                  }
+                  else
+                  {
+                      
+                    listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("-"+String.valueOf(rset.getInt(2)))));
+                      
+                  }
+                  
+                  listeMariage.add(new Mariage(rset.getInt(3),rset.getInt(4))) ;
+                  
+                 
+                  
+                  i= i + 1 ;
+                  
+              }
+              
+              
+              
+              pstmt.close();
+              
+              return listeItems ;
+          } catch (SQLException ex) {
+              Logger.getLogger(DAOVIP.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          return null;
+         
+        
+        
+    
+    
+    
     }
     
+    
+    public String chercherConjoint(int numVip) throws SQLException
+    {
+        String requete = " select numVip, numVipConjoint from Evenement where Evenement.numVip = ? or  Evenement.numVipConjoint = ?";
+        
+         PreparedStatement pstmt = connexion.prepareStatement(requete);
+         
+         pstmt.setInt(1,numVip);
+         pstmt.setInt(2,numVip);
+         
+         ResultSet rset = pstmt.executeQuery(requete);
+         
+         String nom ;
+         
+         int numVoulue ;
+         
+         while (rset.next())
+         {
+              if ( rset.getInt(1) == numVip)
+                  {
+                      numVoulue = rset.getInt(2) ;
+                      
+                  }
+              
+              else
+              {
+                  
+                  numVoulue = rset.getInt(1) ;
+                  
+              }
+              
+              
+               requete = "select nomVip from VIP where numVip = ? )";
+               
+               pstmt = connexion.prepareStatement(requete);
+               
+               pstmt.setInt(1,numVoulue);
+                       
+                rset = pstmt.executeQuery(requete);
+                
+                nom = rset.getString(1);
+                
+                return nom ;
+              
+             
+         }
+         
+         
+         pstmt.executeUpdate();
+         pstmt.close();
+         
+         
+        
+        return null;
+        
+    }
+    
+    
+    public void supprimerMariage(Mariage mariage) throws SQLException
+    {
+        
+        
+        String requete = " delete from Evenement Where Evenement.numVip = ? and Evenement.numVipConjoint = ? " ;
+        
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        
+        pstmt.setInt(1, mariage.getNumVip());
+        pstmt.setInt(1, mariage.getNumVipConjoint());
+        
+        
+        pstmt.executeUpdate();
+        pstmt.close();
+                
+        
+        
+    }
+    
+}
 

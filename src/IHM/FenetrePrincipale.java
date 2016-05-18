@@ -5,14 +5,18 @@
  */
 package IHM;
 
+import Metier.Mariage;
 import Metier.Vip;
 import accesAuxDonnees.DAOVIP;
 import accesAuxDonnees.SourceMySQL;
 import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modeleComboBox.ComboBoxModele;
 import modeleTable.ModeleJTable;
 
 
@@ -27,6 +31,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
   
   Vip vip ;
   
+  List<Mariage> listeMariage ;
+  
   
   ModeleJTable lemodele ;
   
@@ -36,6 +42,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         this.lemodele = modele ;
        this.leDao = Dao ;
        
+       this.listeMariage = new ArrayList<>();
        
         initComponents();
     }
@@ -54,12 +61,23 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAjouterVip = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnAjouterVip = new javax.swing.JButton();
         btnSupprimer = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        comboBoxMariage = new javax.swing.JComboBox();
+        btnDivorcer = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTable1.setModel(lemodele);
+        jScrollPane1.setViewportView(jTable1);
 
         btnAjouterVip.setText("ajouterVip");
         btnAjouterVip.addActionListener(new java.awt.event.ActionListener() {
@@ -68,9 +86,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(lemodele);
-        jScrollPane1.setViewportView(jTable1);
-
         btnSupprimer.setText("supprimer un Vip");
         btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,41 +93,128 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSupprimer)
+                    .addComponent(btnAjouterVip))
+                .addGap(21, 21, 21))
+        );
+
+        jTabbedPane2.addTab("VIP", jPanel1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 503, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 414, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Mariage", jPanel3);
+
+        comboBoxMariage.setModel(new ComboBoxModele(this.leDao.vipMarié(this.listeMariage)));
+
+        btnDivorcer.setText("Divorcer les deux Vip");
+        btnDivorcer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDivorcerActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Liste des mariages");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboBoxMariage, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(92, 92, 92)
+                        .addComponent(btnDivorcer, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(137, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(188, 188, 188))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboBoxMariage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(btnDivorcer)
+                .addContainerGap(208, Short.MAX_VALUE))
+        );
+
+        //jComboBox1.setModel(new ComboBoxModele(this.leDao.vipMarié()));
+
+        jTabbedPane2.addTab("Divorce", jPanel2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134)
-                        .addComponent(btnSupprimer)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSupprimer))
-                .addGap(65, 65, 65))
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
+
+        int leNumero = -1 ;
+
+        Vip vipS = new Vip(leNumero);
+
+        FenetreSupprimerVip fen = new FenetreSupprimerVip(this, vipS);
+
+        if(fen.doModal())
+        {
+
+            lemodele.supprimerVipTable(vipS);
+        }
+    }//GEN-LAST:event_btnSupprimerActionPerformed
+
     private void btnAjouterVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVipActionPerformed
-        
-        
-        
+
         FenetreAjoutVip fen = new FenetreAjoutVip(this, vip);
-        
+
         if ( fen.doModal() == true)
         {
             try {
@@ -120,29 +222,18 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
+
     }//GEN-LAST:event_btnAjouterVipActionPerformed
 
-    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
-       
-        int leNumero = -1 ;
-        
-        Vip vipS = new Vip(leNumero);
-        
-        FenetreSupprimerVip fen = new FenetreSupprimerVip(this, vipS);
-        
-        
-        if(fen.doModal())
-        {
-            
-       
-            
-            
-            lemodele.supprimerVipTable(vipS);
-        }
-    }//GEN-LAST:event_btnSupprimerActionPerformed
+    private void btnDivorcerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorcerActionPerformed
+      try {
+          this.leDao.supprimerMariage(this.listeMariage.get(comboBoxMariage.getSelectedIndex()));
+      } catch (SQLException ex) {
+          Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    }//GEN-LAST:event_btnDivorcerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -151,8 +242,16 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAjouterVip;
+    private javax.swing.JButton btnDivorcer;
     private javax.swing.JButton btnSupprimer;
+    private javax.swing.JComboBox comboBoxMariage;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
