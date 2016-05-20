@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,7 +106,7 @@ public class DAOVIP {
           try {
               List<String> listeItems = new ArrayList<>() ;
               
-              String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce = NULL";
+              String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce IS NULL ";
               
               PreparedStatement pstmt = connexion.prepareStatement(requete);
               
@@ -131,7 +132,7 @@ public class DAOVIP {
                       
                   }
                   
-                  listeMariage.add(new Mariage(rset.getInt(3),rset.getInt(4))) ;
+                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
                   
                  
                   
@@ -214,24 +215,127 @@ public class DAOVIP {
     }
     
     
-    public void supprimerMariage(Mariage mariage) throws SQLException
+    public void divorcerVip(Mariage mariage, String date) throws SQLException
     {
         
         
-        String requete = " delete from Evenement Where Evenement.numVip = ? and Evenement.numVipConjoint = ? " ;
+        String requete = "Update Evenement set dateDivorce = ?  Where Evenement.numVIP = ? and Evenement.numVIPConjoint = ? " ;
         
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         
-        pstmt.setInt(1, mariage.getNumVip());
-        pstmt.setInt(1, mariage.getNumVipConjoint());
+        pstmt.setString(1,date);
+        pstmt.setInt(2, mariage.getNumVip());
+        pstmt.setInt(3, mariage.getNumVipConjoint());
         
         
         pstmt.executeUpdate();
+        
+        
+        requete = "Update VIP set codeStatut = 'C' where numVip = ? ";
+        
+         pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, mariage.getNumVip());
+         pstmt.executeUpdate();
+         
+          requete = "Update VIP set codeStatut = 'C'  where numVip = ? ";
+          
+           pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, mariage.getNumVipConjoint());
+         
+         pstmt.executeUpdate();
+        
         pstmt.close();
                 
         
         
     }
+    
+    
+    public List<String> getCelibataire(List<Vip> listeVip) 
+    {
+          try {
+              String requete = "select numVIP, nomVIP from VIP WHERE codestatut = 'C'";
+              
+              
+              PreparedStatement pstmt = connexion.prepareStatement(requete);
+              
+              ResultSet rset = pstmt.executeQuery() ;
+              
+              String nom ;
+              int num ;
+              
+              
+              List<String> listeItem = new ArrayList<>();
+              
+              while(rset.next())
+              {
+                  
+                  nom = rset.getString(2);
+                  num = rset.getInt(1);
+                  
+                  Vip temp = new Vip(num,nom);
+                  
+                  listeVip.add(temp);
+                  
+                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  
+                  
+                  
+              }
+              
+              
+              return listeItem ;
+          } catch (SQLException ex) {
+              Logger.getLogger(DAOVIP.class.getName()).log(Level.SEVERE, null, ex);
+          }
+                
+                
+                
+             return null;   
+                
+                
+    }
+    
+    
+    
+    public void marierVip(Vip vip1, Vip vip2, String date, String lieux) throws SQLException
+    {
+        
+         
+        String requete = "INSERT INTO Evenement Values (?,?,?,?,NULL)" ;
+        
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        
+        pstmt.setString(2,date);
+        pstmt.setInt(1, vip1.getNumVip());
+        pstmt.setInt(3, vip2.getNumVip());
+        pstmt.setString(4,lieux);
+        
+        
+        pstmt.executeUpdate();
+        
+        
+        requete = "Update VIP set codeStatut = 'M' where numVip = ? ";
+        
+         pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, vip1.getNumVip());
+         pstmt.executeUpdate();
+         
+          requete = "Update VIP set codeStatut = 'M'  where numVip = ? ";
+          
+           pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, vip2.getNumVip());
+         
+         pstmt.executeUpdate();
+        
+        pstmt.close();
+        
+    }
+    
+    
+    
+    
+    
     
 }
 

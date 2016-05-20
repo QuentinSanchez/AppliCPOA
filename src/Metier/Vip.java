@@ -52,6 +52,11 @@ public class Vip {
         this.numVip = numVip;
     }
 
+    public Vip(int numVip, String nom) {
+        this.numVip = numVip;
+        this.nom = nom;
+    }
+
     
     
     
