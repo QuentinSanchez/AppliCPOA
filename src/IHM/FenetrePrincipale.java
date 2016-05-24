@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
+import javax.swing.JTable;
 import modeleComboBox.ComboBoxModele;
 import modeleTable.ModeleJTable;
 
@@ -75,6 +76,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         tableVip = new javax.swing.JTable();
         btnAjouterVip = new javax.swing.JButton();
         btnSupprimer = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jComboVip1 = new javax.swing.JComboBox();
@@ -96,6 +98,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtDate = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +119,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Modifier");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -126,6 +136,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139)
+                        .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnSupprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -138,7 +150,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSupprimer)
-                    .addComponent(btnAjouterVip))
+                    .addComponent(btnAjouterVip)
+                    .addComponent(jButton2))
                 .addGap(21, 21, 21))
         );
 
@@ -317,6 +330,19 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Divorce", jPanel2);
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 503, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 414, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Casting", jPanel4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -362,12 +388,15 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
     private void btnAjouterVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVipActionPerformed
 
-        FenetreAjoutVip fen = new FenetreAjoutVip(this, vip);
+        Vip vipAjouter = new Vip();
+        
+        
+        FenetreAjoutVip fen = new FenetreAjoutVip(this, vipAjouter );
 
         if ( fen.doModal() == true)
         {
             try {
-                lemodele.insererVIP(vip);
+                lemodele.insererVIP(vipAjouter );
             } catch (SQLException ex) {
                 Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -405,7 +434,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDateActionPerformed
 
     private void btnAjouterVip2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVip2ActionPerformed
-         FenetreAjoutVip fen = new FenetreAjoutVip(this, vip);
+         FenetreModifierVip fen = new FenetreModifierVip(this, vip);
 
         if ( fen.doModal() == true)
         {
@@ -453,6 +482,47 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+          
+        int leNumero = -1 ;
+          
+          
+          int ligne = this.tableVip.getSelectedRow();
+          
+          
+        if(ligne!= -1)
+        {
+      try {
+         
+          
+          leNumero =(int) lemodele.getValueAt(ligne,0);
+          
+          
+          
+          Vip vipModifier = leDao.getVip(leNumero);
+          
+           FenetreModifierVip fen2 = new FenetreModifierVip(this, vipModifier);
+           
+           fen2.remplirChamps();
+           
+           if( fen2.doModal())
+           {
+               
+               this.lemodele.modifierVip(vipModifier,ligne);
+               
+              
+               
+               
+               
+           }
+          
+          
+      } catch (SQLException ex) {
+          Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+      }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -465,6 +535,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JButton btnSupprimer;
     private javax.swing.JComboBox comboBoxMariage;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox jComboBoxVip2;
     private javax.swing.JComboBox jComboVip1;
     private javax.swing.JLabel jLabel1;
@@ -480,6 +551,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;

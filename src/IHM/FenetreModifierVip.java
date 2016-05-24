@@ -11,12 +11,12 @@ import Metier.Vip;
  *
  * @author poncho
  */
-public class FenetreAjoutVip extends javax.swing.JDialog {
+public class FenetreModifierVip extends javax.swing.JDialog {
 
     Vip leVip ;
     
     boolean etat ;
-    public FenetreAjoutVip(java.awt.Frame parent, Vip vip) {
+    public FenetreModifierVip(java.awt.Frame parent, Vip vip) {
         super(parent, true);
         
         this.leVip = vip ;
@@ -33,6 +33,25 @@ public class FenetreAjoutVip extends javax.swing.JDialog {
    }
    
    
+   public void remplirChamps()
+   {
+       
+       
+       txtNumVip.setText(String.valueOf(this.leVip.getNumVip()));
+       txtNom.setText(this.leVip.getNom());
+       txtPrenom.setText(this.leVip.getPrenom());
+       txtCodeActeur.setText(this.leVip.getCodeActeur());
+       txtCodeStatut.setText(this.leVip.getCodeStatut());
+       txtDateNaissance.setText(this.leVip.getDateNaissance());
+       txtLieuxNaissance.setText(this.leVip.getLieuxNaissance());
+       txtPays.setText(this.leVip.getPays());
+       txtCivilitee.setText(this.leVip.getCivilitee());
+       
+       btnCreerVip.setText("modifier");
+       
+       
+       
+   }
    
    
     @SuppressWarnings("unchecked")
@@ -61,23 +80,36 @@ public class FenetreAjoutVip extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        txtPrenom.setText("t");
         txtPrenom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPrenomActionPerformed(evt);
             }
         });
 
+        txtNumVip.setText("22");
         txtNumVip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNumVipActionPerformed(evt);
             }
         });
 
+        txtCivilitee.setText("M");
+
+        txtDateNaissance.setText("01-01-01");
+
+        txtLieuxNaissance.setText("t");
+
+        txtCodeActeur.setText("A");
+
+        txtNom.setText("t");
         txtNom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNomActionPerformed(evt);
             }
         });
+
+        txtCodeStatut.setText("C");
 
         jLabel1.setText("Nom :");
 
@@ -97,6 +129,7 @@ public class FenetreAjoutVip extends javax.swing.JDialog {
 
         jLabel9.setText("Pays");
 
+        txtPays.setText("USA");
         txtPays.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPaysActionPerformed(evt);

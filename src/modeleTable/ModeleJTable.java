@@ -166,5 +166,25 @@ public class ModeleJTable extends AbstractTableModel{
             
             
         }
+          
+          
+          
+          public void modifierVip(Vip leVip, int index) throws SQLException
+          {
+              
+              this.leDao.modifierVip(leVip);
+              conteneur.remove(index);
+              conteneur.add(index, leVip);
+              
+              
+              
+              this.fireTableDataChanged();
+              
+              
+              
+              
+          }
+
+   
     
 }

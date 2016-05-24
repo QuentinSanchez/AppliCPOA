@@ -123,29 +123,53 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="txtPrenom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="t"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPrenomActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNumVip">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="22"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumVipActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCivilitee">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="M"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtDateNaissance">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="01-01-01"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtLieuxNaissance">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="t"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCodeActeur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="t"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNomActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtCodeStatut">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="C"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -193,6 +217,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPays">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="USA"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPaysActionPerformed"/>
       </Events>

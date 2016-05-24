@@ -333,8 +333,66 @@ public class DAOVIP {
     }
     
     
+    public void modifierVip(Vip leVip) throws SQLException
+    {
+         String requete = "Update VIP set numVip =? , nomVip = ? ,prenomVip = ?, civilite = ?, dateNaissance =? , lieuNaissance = ?, codeRole = ?, codeStatut = ?, pays = ? where numVip = ?";
+       
+       PreparedStatement pstm = connexion.prepareStatement(requete);
+       
+       pstm.setInt(1, leVip.getNumVip());
+       pstm.setString(2, leVip.getNom());
+       pstm.setString(3, leVip.getPrenom());
+       pstm.setString(4,  leVip.getCivilitee());
+       pstm.setString(5,  leVip.getDateNaissance());
+       pstm.setString(6,  leVip.getLieuxNaissance());
+       pstm.setString(7,  leVip.getCodeActeur());
+       pstm.setString(8,  leVip.getCodeStatut());
+       pstm.setString(9,  leVip.getPays());
+        pstm.setInt(10, leVip.getNumVip());
+       
+       
+       pstm.executeUpdate();
+       
+       pstm.close();
+    }
     
     
+    
+    public Vip getVip(int numVip) throws SQLException
+    {
+        
+        String requete = "select * from VIP where numVip = ?";
+        
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        pstmt.setInt(1, numVip);
+        
+        ResultSet rset = pstmt.executeQuery();
+        
+        String nom = null,prenom = null,civ = null,dateNaissance = null,codeA = null,codeS = null,pays = null,lieuxNaissance = null;
+        
+        
+        while( rset.next())
+        {
+             
+         nom = rset.getString(2);
+         prenom = rset.getString(3);
+         civ = rset.getString(4);
+         dateNaissance = rset.getString(5);
+         lieuxNaissance = rset.getString(6);
+         codeA = rset.getString(7);
+         codeS = rset.getString(8);
+         pays = rset.getString(9);
+            
+            
+            
+            
+            
+        }
+        
+        Vip leVip = new Vip(numVip,nom,prenom,civ,dateNaissance,lieuxNaissance,codeA,codeS,pays);
+        return leVip;
+        
+    }
     
     
 }
