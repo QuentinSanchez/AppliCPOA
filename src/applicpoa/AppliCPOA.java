@@ -7,6 +7,7 @@ package applicpoa;
 
 import IHM.FenetreIdentification;
 import IHM.FenetrePrincipale;
+import accesAuxDonnees.DAOFilm;
 import accesAuxDonnees.DAOVIP;
 import accesAuxDonnees.SourceMySQL;
 import java.net.PasswordAuthentication;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
 import modeleTable.ModeleJTable;
+import modeleTable.ModeleJTableFilm;
 import static sun.security.jgss.GSSUtil.login;
 
 /**
@@ -31,6 +33,8 @@ public class AppliCPOA {
     public static void main(String[] args) throws SQLException {
         
          DAOVIP leDao = null ;
+         
+         DAOFilm leDaoFilm = null ;
   
   
    DataSource laSourceDeDonnees = null;
@@ -59,12 +63,17 @@ public class AppliCPOA {
         
         leDao = new DAOVIP(laConnexion);
         
+        leDaoFilm = new DAOFilm(laConnexion);
+        
         lemodele = new ModeleJTable(leDao);
+        
+        ModeleJTableFilm lemodeleFilm = new ModeleJTableFilm(leDaoFilm);
         lemodele.chargerVip();
+        lemodeleFilm.chargerFilm();
         
         
         try {
-            FenetrePrincipale fenetre = new FenetrePrincipale(leDao,lemodele);
+            FenetrePrincipale fenetre = new FenetrePrincipale(leDao,leDaoFilm,lemodele, lemodeleFilm);
             fenetre.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(AppliCPOA.class.getName()).log(Level.SEVERE, null, ex);

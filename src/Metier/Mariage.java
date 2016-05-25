@@ -39,6 +39,30 @@ public class Mariage {
     public void setNumVipConjoint(int numVipConjoint) {
         this.numVipConjoint = numVipConjoint;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mariage other = (Mariage) obj;
+        if (this.numVip != other.numVip) {
+            return false;
+        }
+        if (this.numVipConjoint != other.numVipConjoint) {
+            return false;
+        }
+        return true;
+    }
    
     
     

@@ -5,6 +5,7 @@
  */
 package accesAuxDonnees;
 
+import Metier.Film;
 import Metier.Mariage;
 import Metier.Vip;
 import java.sql.Connection;
@@ -104,6 +105,8 @@ public class DAOVIP {
     public List<String> vipMarié( List<Mariage> listeMariage) 
     {
           try {
+              
+              //listeMariage = new ArrayList<Mariage>(); // sert uniquement pour la fenetre princiaple et non pour l'affichage
               List<String> listeItems = new ArrayList<>() ;
               
               String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce IS NULL ";
@@ -132,8 +135,13 @@ public class DAOVIP {
                       
                   }
                   
-                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
                   
+                 Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3)));
+                 
+                 if ( !(listeMariage.contains(mariage)))
+                 {
+                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
+                 }
                  
                   
                   i= i + 1 ;
@@ -158,61 +166,7 @@ public class DAOVIP {
     }
     
     
-    public String chercherConjoint(int numVip) throws SQLException
-    {
-        String requete = " select numVip, numVipConjoint from Evenement where Evenement.numVip = ? or  Evenement.numVipConjoint = ?";
-        
-         PreparedStatement pstmt = connexion.prepareStatement(requete);
-         
-         pstmt.setInt(1,numVip);
-         pstmt.setInt(2,numVip);
-         
-         ResultSet rset = pstmt.executeQuery(requete);
-         
-         String nom ;
-         
-         int numVoulue ;
-         
-         while (rset.next())
-         {
-              if ( rset.getInt(1) == numVip)
-                  {
-                      numVoulue = rset.getInt(2) ;
-                      
-                  }
-              
-              else
-              {
-                  
-                  numVoulue = rset.getInt(1) ;
-                  
-              }
-              
-              
-               requete = "select nomVip from VIP where numVip = ? )";
-               
-               pstmt = connexion.prepareStatement(requete);
-               
-               pstmt.setInt(1,numVoulue);
-                       
-                rset = pstmt.executeQuery(requete);
-                
-                nom = rset.getString(1);
-                
-                return nom ;
-              
-             
-         }
-         
-         
-         pstmt.executeUpdate();
-         pstmt.close();
-         
-         
-        
-        return null;
-        
-    }
+    
     
     
     public void divorcerVip(Mariage mariage, String date) throws SQLException
@@ -256,6 +210,8 @@ public class DAOVIP {
           try {
               String requete = "select numVIP, nomVIP from VIP WHERE codestatut = 'C'";
               
+             
+              
               
               PreparedStatement pstmt = connexion.prepareStatement(requete);
               
@@ -275,7 +231,12 @@ public class DAOVIP {
                   
                   Vip temp = new Vip(num,nom);
                   
+                  if( !(listeVip.contains(temp)))
+                  {
+                  
                   listeVip.add(temp);
+                  
+                  }
                   
                   listeItem.add(nom +"-"+ String.valueOf(num));
                   
@@ -393,6 +354,9 @@ public class DAOVIP {
         return leVip;
         
     }
+    
+    
+   
     
     
 }
