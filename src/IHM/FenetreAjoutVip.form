@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroupC">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroupC.add(radioBtnMr);&#xa;buttonGroupC.add(radioBtnMme);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroupCodeActeur">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroupCodeActeur.add(radioBtnActeur);&#xa;buttonGroupCodeActeur.add(radioBtnRealisateur);&#xa;buttonGroupCodeActeur.add(radioBtnAR);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroupCodeStatut">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="buttonGroupCodeStatut.add(radioBtnCelibataire);&#xa;buttonGroupCodeStatut.add(radioBtnMarie);"/>
+      </AuxValues>
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -38,17 +55,38 @@
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="txtPays" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtCodeStatut" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtCodeActeur" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtLieuxNaissance" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtDateNaissance" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtCivilitee" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtNumVip" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtPrenom" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtNom" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="radioBtnMr" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="radioBtnActeur" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="1" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txtLieuxNaissance" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtDateNaissance" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtNumVip" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtPrenom" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtNom" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="jComboBoxPays" min="-2" pref="88" max="-2" attributes="0"/>
+                                  <Component id="radioBtnCelibataire" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="radioBtnRealisateur" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="radioBtnAR" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="radioBtnMme" min="-2" max="-2" attributes="0"/>
+                          <Component id="radioBtnMarie" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -56,7 +94,7 @@
                       <Component id="btnCreerVip" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="111" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -84,10 +122,13 @@
                                           <Component id="txtNumVip" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="txtCivilitee" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="radioBtnMr" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="radioBtnMme" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="txtDateNaissance" min="-2" max="-2" attributes="0"/>
@@ -99,22 +140,27 @@
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           <Component id="txtLieuxNaissance" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                      <Component id="txtCodeActeur" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="radioBtnActeur" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="radioBtnRealisateur" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="radioBtnAR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="txtCodeStatut" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="radioBtnCelibataire" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="radioBtnMarie" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtPays" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxPays" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="21" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="btnCreerVip" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -132,20 +178,14 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumVipActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtCivilitee">
-    </Component>
     <Component class="javax.swing.JTextField" name="txtDateNaissance">
     </Component>
     <Component class="javax.swing.JTextField" name="txtLieuxNaissance">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCodeActeur">
     </Component>
     <Component class="javax.swing.JTextField" name="txtNom">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNomActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtCodeStatut">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -192,11 +232,6 @@
         <Property name="text" type="java.lang.String" value="Pays"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtPays">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPaysActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="btnCreerVip">
       <Properties>
         <Property name="text" type="java.lang.String" value="Creer"/>
@@ -204,6 +239,67 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreerVipActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnMr">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mr"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioBtnMrActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="radioBtnMr.setSelected(true);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnMme">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mme"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnActeur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Acteur"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="radioBtnActeur.setSelected(true);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnRealisateur">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R&#xe9;alisateur"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnAR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Acteur/R&#xe9;alisateur"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioBtnARActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="jComboBoxPays">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ComboBoxModele(this.leDaoDivers.getPays())" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="}&#xa;catch ( Exception E)&#xa;{&#xa;&#xa;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnCelibataire">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="C&#xe9;libataire"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="radioBtnCelibataire.setSelected(true);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="radioBtnMarie">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mari&#xe9;"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

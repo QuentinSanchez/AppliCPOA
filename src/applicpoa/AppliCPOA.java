@@ -7,6 +7,7 @@ package applicpoa;
 
 import IHM.FenetreIdentification;
 import IHM.FenetrePrincipale;
+import accesAuxDonnees.DAODivers;
 import accesAuxDonnees.DAOFilm;
 import accesAuxDonnees.DAOVIP;
 import accesAuxDonnees.SourceMySQL;
@@ -35,6 +36,8 @@ public class AppliCPOA {
          DAOVIP leDao = null ;
          
          DAOFilm leDaoFilm = null ;
+         
+         DAODivers leDaoDivers = null ;
   
   
    DataSource laSourceDeDonnees = null;
@@ -65,6 +68,8 @@ public class AppliCPOA {
         
         leDaoFilm = new DAOFilm(laConnexion);
         
+        leDaoDivers = new DAODivers(laConnexion);
+        
         lemodele = new ModeleJTable(leDao);
         
         ModeleJTableFilm lemodeleFilm = new ModeleJTableFilm(leDaoFilm);
@@ -73,7 +78,7 @@ public class AppliCPOA {
         
         
         try {
-            FenetrePrincipale fenetre = new FenetrePrincipale(leDao,leDaoFilm,lemodele, lemodeleFilm);
+            FenetrePrincipale fenetre = new FenetrePrincipale(leDao,leDaoFilm,lemodele, lemodeleFilm, leDaoDivers);
             fenetre.setVisible(true);
         } catch (Exception ex) {
             Logger.getLogger(AppliCPOA.class.getName()).log(Level.SEVERE, null, ex);

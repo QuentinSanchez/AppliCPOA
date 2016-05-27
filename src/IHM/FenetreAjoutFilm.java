@@ -6,6 +6,8 @@
 package IHM;
 
 import Metier.Film;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 /**
  *
@@ -111,10 +113,21 @@ boolean doModal ()
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValiderActionPerformed
-       this.leFilm.setNumVisa(Integer.parseInt(txtVisa.getText()));
+       
+        try{
+        this.leFilm.setNumVisa(Integer.parseInt(txtVisa.getText()));
        this.leFilm.setTitre(txtTitre.getText());
        this.leFilm.setAnnee(txtAnnee.getText());
        this.leFilm.setLibelleGenre(txtGenre.getText());
+        }
+        catch(Exception E)
+        {
+            
+                                       JOptionPane.showMessageDialog(this,"erreur sur les informations, verifier que tous les champs soit bien remplis" , "attention", INFORMATION_MESSAGE);
+
+        }
+        
+       
        
        etat = true ;
        

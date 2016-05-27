@@ -109,6 +109,8 @@ public class DAOVIP {
               //listeMariage = new ArrayList<Mariage>(); // sert uniquement pour la fenetre princiaple et non pour l'affichage
               List<String> listeItems = new ArrayList<>() ;
               
+              listeMariage.clear();
+              
               String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce IS NULL ";
               
               PreparedStatement pstmt = connexion.prepareStatement(requete);
@@ -126,6 +128,12 @@ public class DAOVIP {
                   {
                       
                        listeItems.add(rset.getString(1).concat("-"+String.valueOf(rset.getInt(2))));
+                       i++ ;
+                       
+                        Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3)));
+                 
+               
+                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
                       
                   }
                   else
@@ -133,19 +141,15 @@ public class DAOVIP {
                       
                     listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("-"+String.valueOf(rset.getInt(2)))));
                       
+                    i++ ;
                   }
                   
                   
-                 Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3)));
+                
                  
-                 if ( !(listeMariage.contains(mariage)))
-                 {
-                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
-                 }
                  
                   
-                  i= i + 1 ;
-                  
+                
               }
               
               
@@ -211,7 +215,7 @@ public class DAOVIP {
               String requete = "select numVIP, nomVIP from VIP WHERE codestatut = 'C'";
               
              
-              
+              listeVip.clear();
               
               PreparedStatement pstmt = connexion.prepareStatement(requete);
               
@@ -231,12 +235,10 @@ public class DAOVIP {
                   
                   Vip temp = new Vip(num,nom);
                   
-                  if( !(listeVip.contains(temp)))
-                  {
-                  
+                
                   listeVip.add(temp);
                   
-                  }
+                  
                   
                   listeItem.add(nom +"-"+ String.valueOf(num));
                   
@@ -261,7 +263,8 @@ public class DAOVIP {
     
     public void marierVip(Vip vip1, Vip vip2, String date, String lieux) throws SQLException
     {
-        
+        if ( vip1.getNumVip() != vip2.getNumVip())
+        {
          
         String requete = "INSERT INTO Evenement Values (?,?,?,?,NULL)" ;
         
@@ -290,6 +293,7 @@ public class DAOVIP {
          pstmt.executeUpdate();
         
         pstmt.close();
+        }
         
     }
     
