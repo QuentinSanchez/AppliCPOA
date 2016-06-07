@@ -5,12 +5,14 @@
  */
 package IHM;
 
+import Metier.Photo;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -30,10 +32,26 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
   
   private String nomPhoto ;
   
+  private Photo laPhoto ;
+  
+  
+  private boolean etat ;
+  
   private String nomF;
-    public FenetreAjoutPhoto(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public FenetreAjoutPhoto(java.awt.Frame parent,  Photo laPhoto) {
+        super(parent, true);
+        
+        this.laPhoto= laPhoto ;
+        
+        etat = false ;
+        
         initComponents();
+    }
+    
+    public boolean doModal()
+    {
+        this.setVisible(true);
+        return etat ;
     }
 
     /**
@@ -45,10 +63,26 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupP = new javax.swing.ButtonGroup();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         txtNomPhoto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtLieu = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtAnneeD = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        txtMoisD = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        txtJourD = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        radioBtnPhotoP = new javax.swing.JRadioButton();
+        radioBtnPhoto = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+
+        buttonGroupP.add(radioBtnPhotoP);
+        buttonGroupP.add(radioBtnPhoto);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -74,6 +108,28 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
 
         jLabel1.setText("Nom de la photo :");
 
+        jLabel2.setText("Lieu de la photo :");
+
+        jLabel17.setText("aaaa");
+
+        jLabel18.setText("mm ");
+
+        txtMoisD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMoisDActionPerformed(evt);
+            }
+        });
+
+        jLabel19.setText("jj");
+
+        jLabel3.setText("Date :");
+
+        radioBtnPhotoP.setText("PhotoProfil");
+
+        radioBtnPhoto.setText("Photo");
+
+        jLabel4.setText("Type de la photo :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,26 +137,73 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1))
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNomPhoto))
-                .addContainerGap(213, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel4))
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtMoisD, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel19)
+                                .addGap(1, 1, 1)
+                                .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtNomPhoto)
+                                .addComponent(txtLieu))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(radioBtnPhotoP)
+                        .addGap(18, 18, 18)
+                        .addComponent(radioBtnPhoto)
+                        .addGap(37, 37, 37)))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
+                .addGap(73, 73, 73)
                 .addComponent(jButton1)
-                .addGap(41, 41, 41)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNomPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(50, 50, 50))
+                    .addComponent(jLabel1)
+                    .addComponent(txtNomPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtLieu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18)
+                    .addComponent(txtMoisD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(radioBtnPhotoP)
+                            .addComponent(radioBtnPhoto))
+                        .addContainerGap(76, Short.MAX_VALUE))))
         );
 
         pack();
@@ -159,7 +262,10 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
           
             
           ftpClient.connect("iutdoua-samba.univ-lyon1.fr",990);
-          ftpClient.login("p1422607", "44D4ad251301");
+          Properties props = new Properties();
+        FileInputStream fichier = new FileInputStream("src/info.properties");
+        props.load(fichier);
+          ftpClient.login(props.getProperty("login"), props.getProperty("password"));
           
           System.out.println(ftpClient.getReplyString());
           
@@ -169,16 +275,31 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
 
     ftpClient.setFileTransferMode(FTP.BINARY_FILE_TYPE);
      ftpClient.enterLocalPassiveMode();
+     
+     String remote ;
+     
+     if(this.radioBtnPhoto.isSelected())
+     {
+          remote = "public_html/CPOA/Site/assets/photos/" + txtNomPhoto.getText() ;
+          
+          this.laPhoto.setTypePhoto(1);
+         
+     }
+     else
+     {
+          remote = "public_html/CPOA/Site/assets/photoProfil/" + txtNomPhoto.getText() ;
+         this.laPhoto.setTypePhoto(2);
+     }
   
-    String remote = "public_html/" + txtNomPhoto.getText() ;
+  
     
     String test[] =  txtNomPhoto.getText().split("\\.") ;
     
     
-    String nomPhotoBase = txtNomPhoto.getText().split("\\.")[0];
+   //String nomPhotoBase = txtNomPhoto.getText().split("\\.")[0];
     
     
-    System.out.println(nomPhotoBase) ;
+    //System.out.println(nomPhotoBase) ;
     
     
     
@@ -189,6 +310,15 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
           {
               
               System.out.println("reussi");
+              
+              this.laPhoto.setNomPhoto(txtNomPhoto.getText());
+              
+              this.laPhoto.setLieu(txtLieu.getText());
+              
+              String dateD = txtAnneeD.getText() +"-"+txtMoisD.getText()+"-"+txtJourD.getText() ;
+              this.laPhoto.setDatePhoto(dateD);
+              
+              etat = true ;
               
               this.dispose();
           }
@@ -209,11 +339,28 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomPhotoActionPerformed
 
+    private void txtMoisDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMoisDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMoisDActionPerformed
+
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupP;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JRadioButton radioBtnPhoto;
+    private javax.swing.JRadioButton radioBtnPhotoP;
+    private javax.swing.JTextField txtAnneeD;
+    private javax.swing.JTextField txtJourD;
+    private javax.swing.JTextField txtLieu;
+    private javax.swing.JTextField txtMoisD;
     private javax.swing.JTextField txtNomPhoto;
     // End of variables declaration//GEN-END:variables
 

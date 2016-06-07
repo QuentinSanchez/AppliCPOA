@@ -7,6 +7,7 @@ package accesAuxDonnees;
 
 import Metier.Film;
 import Metier.Mariage;
+import Metier.Photo;
 import Metier.Vip;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,11 +49,20 @@ public class DAOVIP {
        
        pstm.executeUpdate();
        
-       pstm.close();
+      
        
-        
-        
-        
+       
+       
+       
+       requete = "insert into PhotoProfilVIP values (?,?)";
+        pstm = connexion.prepareStatement(requete);
+         pstm.setInt(1, leVip.getNumVip());
+         pstm.setString(2,"defaut.png");
+         
+         pstm.executeUpdate();
+         pstm.close();
+         
+         
     }
      
       
@@ -360,8 +370,70 @@ public class DAOVIP {
     }
     
     
-   
     
+    public void ajouterPhoto( Photo photo) throws SQLException
+    {
+        String requete = "INSERT INTO PhotoVIP VALUES (?,?,?,?)";
+        
+          PreparedStatement pstmt = connexion.prepareStatement(requete);
+        pstmt.setInt(1, photo.getNumeroVip());
+        pstmt.setString(2, photo.getNomPhoto());
+         pstmt.setString(3, photo.getDatePhoto());
+         
+         pstmt.setString(4, photo.getLieu());
+         
+        pstmt.executeUpdate();
+        
+        pstmt.close();
+        
+    }
+   
+     public void ajouterPhotoProfil( Photo photo) throws SQLException
+    {
+        
+          
+         String requete = "SELECT * from PhotoProfilVIP where numVIP =?";
+        
+         
+         
+          PreparedStatement pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, photo.getNumeroVip());
+         
+           ResultSet rset = pstmt.executeQuery();
+           
+          int i = 0 ;
+          
+          
+           
+           String test = null ;
+           
+           
+           while ( rset.next())
+           {
+               test = rset.getString(2);
+               
+           }
+        
+           if ( test.equals("defaut.png"))
+           {
+               
+        
+        requete = "UPDATE PhotoProfilVIP set numPhoto = ?  where numVIP = ?";
+        
+           pstmt = connexion.prepareStatement(requete);
+        pstmt.setInt(2, photo.getNumeroVip());
+        
+        pstmt.setString(1, photo.getNomPhoto());
+        
+        pstmt.executeUpdate();
+           }
+           
+         
+       
+        
+        pstmt.close();
+        
+    }
     
 }
 

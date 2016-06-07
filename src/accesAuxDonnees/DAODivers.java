@@ -53,4 +53,31 @@ public class DAODivers {
         
     }
     
+     public List<String> getGenre() throws SQLException
+    {
+       String requete = "select * from Genre";
+       
+       PreparedStatement pstmt = this.connexion.prepareStatement(requete);
+       
+       List<String> listeGenre = new ArrayList<>();
+       
+       
+       ResultSet rset = pstmt.executeQuery();
+       
+       
+       while( rset.next())
+       {
+           
+           listeGenre.add(rset.getString(1));
+       }
+        
+        
+        return listeGenre ;
+        
+        
+        
+        
+        
+    }
+    
 }

@@ -69,6 +69,16 @@ public class DAOFilm {
        
        pstm.executeUpdate();
        
+       
+        requete = "insert into AfficheFilm values (?,?)";
+        pstm = connexion.prepareStatement(requete);
+         pstm.setInt(1, leFilm.getNumVisa());
+         pstm.setString(2,"defaut.png");
+         
+         pstm.executeUpdate();
+         
+         
+       
        pstm.close();
        
         
