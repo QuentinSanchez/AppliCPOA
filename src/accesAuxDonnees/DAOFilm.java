@@ -5,6 +5,7 @@
  */
 package accesAuxDonnees;
 
+import Metier.AfficheFilm;
 import Metier.Film;
 import Metier.Mariage;
 import Metier.Vip;
@@ -156,6 +157,53 @@ public class DAOFilm {
         
         
         return temp ;
+        
+    }
+           
+           
+           public void ajoutAffiche(AfficheFilm affiche) throws SQLException
+           {
+               
+               String requete = "Update AfficheFilm set nomAffiche = ? where numVisa = ?";
+               
+               PreparedStatement pstmt = connexion.prepareStatement(requete);
+               
+               
+               pstmt.setString(1,affiche.getNom());
+               
+               pstmt.setInt(2,affiche.getNumVisa());
+               
+               
+               pstmt.executeUpdate();
+               
+               pstmt.close();
+               
+           }
+           
+           
+              public List<String>listeFilm() throws SQLException { 
+                  
+               List<String> listeFilm = new ArrayList<>();   
+        String requete = "select * from Film";
+        PreparedStatement pstmt = connexion.prepareStatement(requete);
+        ResultSet rset = pstmt.executeQuery(requete);
+        while (rset.next()) { 
+            
+        int numVisa = rset.getInt(1);
+        String titre = rset.getString(2);
+      
+       
+        
+        
+        
+        listeFilm.add(numVisa + "-"+titre);
+            
+           
+        }
+        rset.close();
+        pstmt.close(); 
+        
+        return listeFilm ;
         
     }
     

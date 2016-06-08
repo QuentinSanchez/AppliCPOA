@@ -434,6 +434,103 @@ public class DAOVIP {
         pstmt.close();
         
     }
+     
+     
+      public List<String> getActeur() 
+    {
+          try {
+              String requete = "select numVIP, nomVIP from VIP WHERE codeRole = 'A 'OR codeRole ='AR' ";
+              
+             
+             
+              
+              PreparedStatement pstmt = connexion.prepareStatement(requete);
+              
+              ResultSet rset = pstmt.executeQuery() ;
+              
+              String nom ;
+              int num ;
+              
+              
+              List<String> listeItem = new ArrayList<>();
+              
+              while(rset.next())
+              {
+                  
+                  nom = rset.getString(2);
+                  num = rset.getInt(1);
+                  
+                
+                  
+                
+                  
+                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  
+                  
+                  
+              }
+              
+              
+              return listeItem ;
+          } catch (SQLException ex) {
+              Logger.getLogger(DAOVIP.class.getName()).log(Level.SEVERE, null, ex);
+          }
+                
+                
+                
+             return null;   
+                
+                
+    }
+      
+        public List<String> getRealisateur() 
+    {
+          try {
+              String requete = "select numVIP, nomVIP from VIP WHERE codeRole = 'R 'OR codeRole ='AR' ";
+              
+             
+             
+              
+              PreparedStatement pstmt = connexion.prepareStatement(requete);
+              
+              ResultSet rset = pstmt.executeQuery() ;
+              
+              String nom ;
+              int num ;
+              
+              
+              List<String> listeItem = new ArrayList<>();
+              
+              while(rset.next())
+              {
+                  
+                  nom = rset.getString(2);
+                  num = rset.getInt(1);
+                  
+                
+                  
+                
+                  
+                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  
+                  
+                  
+              }
+              
+              
+              return listeItem ;
+          } catch (SQLException ex) {
+              Logger.getLogger(DAOVIP.class.getName()).log(Level.SEVERE, null, ex);
+          }
+                
+                
+                
+             return null;   
+                
+                
+    }
+     
+     
     
 }
 

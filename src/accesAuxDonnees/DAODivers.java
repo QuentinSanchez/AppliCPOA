@@ -79,5 +79,40 @@ public class DAODivers {
         
         
     }
+     
+     
+     public void insererCasting(int numVip, int numVisa, String codeRole) throws SQLException
+     {
+         String requete = null ;
+         if ( codeRole.equals("A"))
+         {
+         
+           requete = "insert into Casting values (?,?,'A')";
+           
+         }
+         
+        else
+         {
+             
+              requete = "insert into Casting values (?,?,'R')";
+         }
+       
+       PreparedStatement pstmt = this.connexion.prepareStatement(requete);
+       
+     pstmt.setInt (1,numVip);
+     
+     pstmt.setInt(2,numVisa);
+       
+      pstmt.executeUpdate();
+      
+      pstmt.close();
+        
+        
+       
+        
+        
+        
+         
+     }
     
 }

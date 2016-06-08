@@ -5,6 +5,7 @@
  */
 package IHM;
 
+import Metier.AfficheFilm;
 import Metier.Film;
 import Metier.Mariage;
 import Metier.Photo;
@@ -52,6 +53,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
   ModeleJTable lemodele ;
   
    ModeleJTableFilm lemodeleFilm ;
+    
   
     public FenetrePrincipale(DAOVIP Dao,DAOFilm leDaoFilm, ModeleJTable modele, ModeleJTableFilm modeleFilm, DAODivers leDaoDivers) throws SQLException, Exception {
         vip = new Vip();
@@ -101,11 +103,16 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         btnSupprimerFilm = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jComboBoxFilm = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        jComboBoxActeur = new javax.swing.JComboBox();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jComboBoxRealisateur = new javax.swing.JComboBox();
+        jButton6 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -230,21 +237,32 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Ajouter une affiche");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(jButton4)
-                        .addGap(40, 40, 40)
-                        .addComponent(btnSupprimerFilm))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSupprimerFilm)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5)
+                        .addGap(32, 32, 32))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,19 +273,51 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
-                    .addComponent(btnSupprimerFilm))
+                    .addComponent(btnSupprimerFilm)
+                    .addComponent(jButton5))
                 .addGap(21, 21, 21))
         );
 
         jTabbedPane2.addTab("Film", jPanel4);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        try{
+            jComboBoxFilm.setModel(new ComboBoxModele(this.leDaoFilm.listeFilm()));
+        }
+        catch(Exception E)
+        {
+
+        }
 
         jLabel11.setText("Film :");
 
         jLabel12.setText("Acteur:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        try{
+            jComboBoxActeur.setModel(new ComboBoxModele(this.leDao.getActeur()));
+        }
+        catch(Exception e)
+        {
+
+        }
+
+        jLabel16.setText("Realisateur :");
+
+        jLabel20.setText("ou");
+
+        try{
+            jComboBoxRealisateur.setModel(new ComboBoxModele(this.leDao.getRealisateur()));
+        }
+        catch(Exception e)
+        {
+
+        }
+
+        jButton6.setText("creer le casting");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -275,27 +325,41 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
-                .addGap(69, 69, 69)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox1, 0, 97, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton6)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12))
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBoxFilm, 0, 97, Short.MAX_VALUE)
+                            .addComponent(jComboBoxActeur, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel20)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel16)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addGap(38, 38, 38)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(329, Short.MAX_VALUE))
+                    .addComponent(jComboBoxActeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel20)
+                    .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(116, 116, 116)
+                .addComponent(jButton6)
+                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Casting", jPanel5);
@@ -836,9 +900,126 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnPhotoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+           int leNumero = -1 ;
+
+        int ligne = this.tableFilm.getSelectedRow();
+
+        if(ligne!= -1)
+        {
+            
+
+                leNumero =(int) lemodeleFilm.getValueAt(ligne,0);
+                
+        
+        
+       AfficheFilm afficheAjoutee = new AfficheFilm();
+        
+     FenetreAjoutAffiche fen6 = new FenetreAjoutAffiche(this, afficheAjoutee, leNumero);
+        
+        
+        if ( fen6.doModal() ==true)
+        {
+            
+                    try {
+                        this.leDaoFilm.ajoutAffiche(afficheAjoutee);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+                        
+                               JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
+
+                    }
+                
+              
+                  
+                    
+                }
+                
+
+                
+           
+            
+        
+         
+        } 
+        else
+        {
+                              JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
+
+            
+        }
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+       
+        if ( jComboBoxFilm.getSelectedIndex() == -1)
+        {
+             JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
+    
+            
+        }
+        else{
+            
+        
+        
+        String nomFilm = (String) this.jComboBoxFilm.getSelectedItem();
+        
+        int numVisa = Integer.parseInt(nomFilm.split("-")[0]);
+        
+        if ( (jComboBoxActeur.getSelectedIndex() == -1 && jComboBoxRealisateur.getSelectedIndex()==-1)||(jComboBoxActeur.getSelectedIndex() != -1 && jComboBoxRealisateur.getSelectedIndex()!=-1) )
+        {
+                                          JOptionPane.showMessageDialog(this,"vous devez sélectionner un acteur ou un realisateur" , "attention", INFORMATION_MESSAGE);
+
+            jComboBoxActeur.setSelectedIndex(-1);
+            
+            jComboBoxRealisateur.setSelectedIndex(-1);
+            
+        }
+        else if (jComboBoxActeur.getSelectedIndex() != -1)
+        {
+             
+        String nomActeur = (String) this.jComboBoxActeur.getSelectedItem();
+        
+        int numActeur = Integer.parseInt(nomActeur.split("-")[1]);
+        
+            try {
+                this.leDaoDivers.insererCasting(numActeur, numVisa, "A");
+                  jComboBoxActeur.setSelectedIndex(-1);
+            
+                 jComboBoxFilm.setSelectedIndex(-1);
+             
+             
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+
+                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        else
+        {
+             String nomRealisateur = (String) this.jComboBoxRealisateur.getSelectedItem();
+        
+        int numRealisateur = Integer.parseInt(nomRealisateur.split("-")[1]);
+        
+            try {
+                this.leDaoDivers.insererCasting(numRealisateur, numVisa, "R");
+                
+                  jComboBoxFilm.setSelectedIndex(-1);
+            
+            jComboBoxRealisateur.setSelectedIndex(-1);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+
+                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+  
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -853,8 +1034,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JComboBox jComboBoxActeur;
+    private javax.swing.JComboBox jComboBoxFilm;
+    private javax.swing.JComboBox jComboBoxRealisateur;
     private javax.swing.JComboBox jComboBoxVip2;
     private javax.swing.JComboBox jComboVip1;
     private javax.swing.JLabel jLabel1;
@@ -864,10 +1048,12 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
