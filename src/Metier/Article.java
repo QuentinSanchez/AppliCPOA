@@ -21,7 +21,7 @@ public class Article {
     
     private String titre ;
     
-    String nomPhoto ;
+    private String nomPhoto ;
 
     public Article(int idArticle, String auteur, String date, String heure, String contenu, String titre, String nomPhoto) {
         this.idArticle = idArticle;

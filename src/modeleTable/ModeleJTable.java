@@ -140,35 +140,13 @@ public class ModeleJTable extends AbstractTableModel{
             
         }
         
-          public void supprimerVipTable ( Vip leVip) 
-        {
-        try {
-            leDao.supprimerVip(leVip);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ModeleJTable.class.getName()).log(Level.SEVERE, null, ex); //mettre une fenetre d'erreur
-            
-        }
         
-       int index = this.conteneur.indexOf(leVip);
+          
+          
+          
         
-       
-       if (index >= 0)
-       {
-           this.conteneur.remove(index);
-       }
-            
-            
-            
-            
-            this.fireTableDataChanged();
-            
-            
-            
-        }
-          
-          
-          
+        
+        
           public void modifierVip(Vip leVip, int index) throws SQLException
           {
               

@@ -13,11 +13,10 @@ import java.net.PasswordAuthentication;
  */
 public class FenetreIdentification extends javax.swing.JDialog {
 
-    /**
-     * Creates new form FenetreIdentification
-     */
+   
     public FenetreIdentification(java.awt.Frame parent) {
         super(parent, true);
+       
         initComponents();
     }
     
@@ -25,6 +24,8 @@ public class FenetreIdentification extends javax.swing.JDialog {
         setVisible(true);
         return new PasswordAuthentication(txtLogin.getText(), txtPassword.getPassword());
     }
+      
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,6 +43,14 @@ public class FenetreIdentification extends javax.swing.JDialog {
         txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jLabel1.setText("Login");
 
@@ -118,6 +127,14 @@ public class FenetreIdentification extends javax.swing.JDialog {
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPasswordActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+       
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        System.exit(0);
+    }//GEN-LAST:event_formWindowClosing
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables

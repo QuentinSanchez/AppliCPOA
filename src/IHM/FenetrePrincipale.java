@@ -113,7 +113,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableVip = new javax.swing.JTable();
         btnAjouterVip = new javax.swing.JButton();
-        btnSupprimer = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btnPhoto = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
@@ -122,7 +121,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         tableFilm = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        btnSupprimerFilm = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -205,13 +203,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
-        btnSupprimer.setText("supprimer un Vip");
-        btnSupprimer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSupprimerActionPerformed(evt);
-            }
-        });
-
         jButton2.setText("Modifier");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,24 +224,21 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(btnPhoto)
-                .addGap(39, 39, 39)
-                .addComponent(btnSupprimer)
-                .addGap(30, 30, 30))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(206, 206, 206)
-                .addComponent(jLabel27)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115)
+                        .addComponent(btnPhoto))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(215, 215, 215)
+                .addComponent(jLabel27)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,7 +249,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSupprimer)
                     .addComponent(btnAjouterVip)
                     .addComponent(jButton2)
                     .addComponent(btnPhoto))
@@ -287,13 +274,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
-        btnSupprimerFilm.setText("Supprimer un film");
-        btnSupprimerFilm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSupprimerFilmActionPerformed(evt);
-            }
-        });
-
         jButton5.setText("Ajouter une affiche");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -311,16 +291,14 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGap(81, 81, 81)
                 .addComponent(jButton4)
-                .addGap(18, 18, 18)
-                .addComponent(btnSupprimerFilm)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton5)
                 .addGap(32, 32, 32))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(214, 214, 214)
@@ -337,7 +315,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
-                    .addComponent(btnSupprimerFilm)
                     .addComponent(jButton5))
                 .addGap(21, 21, 21))
         );
@@ -1058,22 +1035,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void btnSupprimerFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerFilmActionPerformed
-
-        int reponse = JOptionPane.showConfirmDialog(this, "voulez vous vraiment supprimer le Film?","confirmation", YES_NO_OPTION);
-        if( reponse == JOptionPane.YES_OPTION)
-        {
-
-            int leNumero = -1 ;
-
-            int ligne = this.tableFilm.getSelectedRow();
-
-            Film leFilm = new Film((int) lemodeleFilm.getValueAt(ligne, 0));
-
-            lemodeleFilm.supprimerFilm(leFilm);
-        }
-    }//GEN-LAST:event_btnSupprimerFilmActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
         int leNumero = -1 ;
@@ -1200,22 +1161,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void btnSupprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerActionPerformed
-
-        int reponse = JOptionPane.showConfirmDialog(this, "voulz vous vraiment supprimer le Vip?","confirmation", YES_NO_OPTION);
-        if( reponse == JOptionPane.YES_OPTION)
-        {
-
-            int leNumero = -1 ;
-
-            int ligne = this.tableVip.getSelectedRow();
-
-            Vip vip = new Vip((int) lemodele.getValueAt(ligne, 0));
-
-            lemodele.supprimerVipTable(vip);
-        }
-    }//GEN-LAST:event_btnSupprimerActionPerformed
 
     private void btnAjouterVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVipActionPerformed
 
@@ -1420,8 +1365,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JButton btnDivorcer;
     private javax.swing.JButton btnPhoto;
     private javax.swing.JButton btnPhotoArticle;
-    private javax.swing.JButton btnSupprimer;
-    private javax.swing.JButton btnSupprimerFilm;
     private javax.swing.JComboBox comboBoxMariage;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

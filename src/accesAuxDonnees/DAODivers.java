@@ -27,7 +27,7 @@ public class DAODivers {
     }
     
     
-    public List<String> getPays() throws SQLException
+    public List<String> getPays() throws SQLException // renvois la liste des pays pour les jcombobox
     {
        String requete = "select * from Pays";
        
@@ -54,7 +54,7 @@ public class DAODivers {
         
     }
     
-     public List<String> getGenre() throws SQLException
+     public List<String> getGenre() throws SQLException // renvois la liste des genres pour les jcombobox
     {
        String requete = "select * from Genre";
        
@@ -82,10 +82,10 @@ public class DAODivers {
     }
      
      
-     public void insererCasting(int numVip, int numVisa, String codeRole) throws SQLException
+     public void insererCasting(int numVip, int numVisa, String codeRole) throws SQLException // insére un casting
      {
          String requete = null ;
-         if ( codeRole.equals("A"))
+         if ( codeRole.equals("A")) // on teste le codeRole inséré
          {
          
            requete = "insert into Casting values (?,?,'A')";
@@ -117,9 +117,9 @@ public class DAODivers {
      }
      
      
-     public void insérerArticle(Article article) throws SQLException
+     public void insérerArticle(Article article) throws SQLException // permet l'insertion d'un article
      {
-         String requete = "select MAX(idArticle) from Articles";
+         String requete = "select MAX(idArticle) from Articles"; // selectionne les dernier idArticle utilisé pour une incrémentation automatique
          
           PreparedStatement pstmt = this.connexion.prepareStatement(requete);
           

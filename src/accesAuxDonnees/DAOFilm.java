@@ -71,7 +71,7 @@ public class DAOFilm {
        pstm.executeUpdate();
        
        
-        requete = "insert into AfficheFilm values (?,?)";
+        requete = "insert into AfficheFilm values (?,?)"; // on insére aussi une ligne dans la table affiche film
         pstm = connexion.prepareStatement(requete);
          pstm.setInt(1, leFilm.getNumVisa());
          pstm.setString(2,"defaut.png");

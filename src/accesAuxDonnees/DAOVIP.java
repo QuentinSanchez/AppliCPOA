@@ -94,41 +94,7 @@ public class DAOVIP {
     }
     
     
-    public void supprimerVip(Vip leVip) throws SQLException
-    {
-        
-          String requete = "delete from PhotoProfilVIP where numVip = ? ";
-      PreparedStatement  pstmt = connexion.prepareStatement(requete);
-         pstmt.setInt(1, leVip.getNumVip());
-        
-         
-         pstmt.executeUpdate();
-         
-         
-          requete = "delete from PhotoVIP where numVip = ? ";
-        pstmt = connexion.prepareStatement(requete);
-         pstmt.setInt(1, leVip.getNumVip());
-        
-         
-         pstmt.executeUpdate();
-         
-       requete = " delete from VIP where numVip = ?";
-        
-       pstmt = connexion.prepareStatement(requete);
-         
-         pstmt.setString(1,String.valueOf(leVip.getNumVip()));
-         
-         pstmt.executeUpdate();
-         
     
-         
-         pstmt.close();
-         
-         
-        
-        
-        
-    }
     
     
     public List<String> vipMarié( List<Mariage> listeMariage) 
@@ -156,7 +122,7 @@ public class DAOVIP {
                   if ( i%2 == 0)
                   {
                       
-                       listeItems.add(rset.getString(1).concat("_"+String.valueOf(rset.getInt(2))));
+                       listeItems.add(rset.getString(1).concat("_"+String.valueOf(rset.getInt(2)))); // on concatene le nom du Vip avec son numero
                        i++ ;
                        
                         Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3),rset.getString(5)));
@@ -168,7 +134,7 @@ public class DAOVIP {
                   else
                   {
                       
-                    listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("_"+String.valueOf(rset.getInt(2)))));
+                    listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("_"+String.valueOf(rset.getInt(2))))); // la variable i est impaire, on a donc a faire au conjoint du précédent Vip ajouté. On concatene donc le vip courant avec l'ancien
                       
                     i++ ;
                   }
@@ -202,7 +168,7 @@ public class DAOVIP {
     
     
     
-    public void divorcerVip(Mariage mariage, String dateD) throws SQLException
+    public void divorcerVip(Mariage mariage, String dateD) throws SQLException // divorce 2vip en passant par un objet de type Mariage
     {
         
         
@@ -242,7 +208,7 @@ public class DAOVIP {
     public List<String> getCelibataire(List<Vip> listeVip) 
     {
           try {
-              String requete = "select numVIP, nomVIP from VIP WHERE codestatut = 'C'";
+              String requete = "select numVIP, nomVIP from VIP WHERE codestatut = 'C'"; // on récupére tous les Vip qui sont célibataires
               
              
               listeVip.clear();
@@ -296,7 +262,7 @@ public class DAOVIP {
         if ( vip1.getNumVip() != vip2.getNumVip())
         {
          
-        String requete = "INSERT INTO Evenement Values (?,?,?,?,NULL)" ;
+        String requete = "INSERT INTO Evenement Values (?,?,?,?,NULL)" ; // on insére une nouvelle ligne dans la table évenement
         
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         
@@ -309,7 +275,7 @@ public class DAOVIP {
         pstmt.executeUpdate();
         
         
-        requete = "Update VIP set codeStatut = 'M' where numVip = ? ";
+        requete = "Update VIP set codeStatut = 'M' where numVip = ? "; // on change les codes statuts des Vips mariés
         
          pstmt = connexion.prepareStatement(requete);
          pstmt.setInt(1, vip1.getNumVip());
@@ -434,7 +400,7 @@ public class DAOVIP {
                
            }
         
-           if ( test.equals("defaut.png"))
+           if ( test.equals("defaut.png")) // on insére une photo de profil uniquement si le Vip n'en a pas déjà une
            {
                
         
@@ -459,7 +425,7 @@ public class DAOVIP {
       public List<String> getActeur() 
     {
           try {
-              String requete = "select numVIP, nomVIP from VIP WHERE codeRole = 'A 'OR codeRole ='AR' ";
+              String requete = "select numVIP, nomVIP from VIP WHERE codeRole = 'A 'OR codeRole ='AR' "; // on récupére les acteurs et acteur/réalisateur
               
              
              
@@ -484,7 +450,7 @@ public class DAOVIP {
                   
                 
                   
-                  listeItem.add(nom +"_"+ String.valueOf(num));
+                  listeItem.add(nom +"_"+ String.valueOf(num)); // on concaténe le nom et le numéro de Vip de l'acteur. Cela sert a l'affichage de la Jcombobox
                   
                   
                   
@@ -531,7 +497,7 @@ public class DAOVIP {
                   
                 
                   
-                  listeItem.add(nom +"_"+ String.valueOf(num));
+                  listeItem.add(nom +"_"+ String.valueOf(num)); //on concaténe le nom et le numéro de Vip du réalisateur. Cela sert a l'affichage de la Jcombobox
                   
                   
                   
@@ -552,7 +518,7 @@ public class DAOVIP {
         
   
         
-    public int getDernierNumero() throws SQLException
+    public int getDernierNumero() throws SQLException // sert a récupérer le dernier numéro de vip attribué, pour puvoir faire une incrémentation automatique
     {
           String requete = "select MAX(numVIP) from VIP ";
               

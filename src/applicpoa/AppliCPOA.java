@@ -18,6 +18,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import modeleTable.ModeleJTable;
 import modeleTable.ModeleJTableFilm;
 import static sun.security.jgss.GSSUtil.login;
@@ -46,13 +48,19 @@ public class AppliCPOA {
      ModeleJTable lemodele ;
  
         
-       // leDao = new DAOVIP( (Connection) SourceMySQL.getSource( login));
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            System.out.print(e.getMessage());
+        }
       
-        
+       
           boolean etat = false;
         do {
-            FenetreIdentification fi = new FenetreIdentification(null);
+             FenetreIdentification fi = new FenetreIdentification(null);
             PasswordAuthentication login = fi.identifier();
+            
+            
             try {
               laSourceDeDonnees =SourceMySQL.getSource(login); //211695   p1401535
                 laConnexion = laSourceDeDonnees.getConnection();

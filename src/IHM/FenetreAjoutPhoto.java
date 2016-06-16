@@ -142,18 +142,17 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGap(121, 121, 121)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtNomPhoto)
+                                        .addComponent(txtNomPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                                         .addComponent(txtLieu)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addGap(80, 80, 80))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -181,17 +180,24 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(64, 64, 64))))
-                        .addContainerGap(84, Short.MAX_VALUE))
+                        .addContainerGap(84, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(185, 185, 185)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(156, 156, 156)
+                        .addComponent(jLabel5)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
                 .addComponent(jLabel5)
-                .addGap(59, 59, 59)
-                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,18 +215,13 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
                     .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19)
                     .addComponent(jLabel3))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(radioBtnPhotoP)
-                            .addComponent(radioBtnPhoto)
-                            .addComponent(jLabel4))
-                        .addContainerGap(60, Short.MAX_VALUE))))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioBtnPhotoP)
+                    .addComponent(radioBtnPhoto)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
         );
 
         pack();
@@ -282,7 +283,7 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
           Properties props = new Properties();
         FileInputStream fichier = new FileInputStream("src/info.properties");
         props.load(fichier);
-          ftpClient.login(props.getProperty("login"), props.getProperty("password"));
+          ftpClient.login(props.getProperty("login"), props.getProperty("password"));  // on établit les paramétre de connexion et on fournit les identifiants
           
           System.out.println(ftpClient.getReplyString());
           
@@ -295,7 +296,7 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
      
      String remote = null ;
      
-     if(this.radioBtnPhoto.isSelected())
+     if(this.radioBtnPhoto.isSelected()) //si l'utilisateur beut choisir une photo classique on choisit le bon répertoire d'arriver
      {
           remote = "public_html/CPOA/Site/assets/photos/" + txtNomPhoto.getText() ;
           
@@ -304,28 +305,21 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
           
          
      }
-     else if ((this.radioBtnPhotoP.isSelected()))
+     else if ((this.radioBtnPhotoP.isSelected())) // de même si c'est une photo de profil
      {
           remote = "public_html/CPOA/Site/assets/photoProfil/" + txtNomPhoto.getText() ;
          this.laPhoto.setTypePhoto(2);
      }
   
   
-    
-    String test[] =  txtNomPhoto.getText().split("\\.") ;
-    
-    
-   //String nomPhotoBase = txtNomPhoto.getText().split("\\.")[0];
-    
-    
-    //System.out.println(nomPhotoBase) ;
+  
     
     
     
-          boolean done = ftpClient.storeFile(remote, input);
+          boolean done = ftpClient.storeFile(remote, input); // on upload la photo
           input.close();
           
-          if( done)
+          if( done) // on teste si le transfert est réussi
           {
               
               System.out.println("reussi");
@@ -343,7 +337,7 @@ public class FenetreAjoutPhoto extends javax.swing.JDialog {
           }
           else
           {
-              System.out.println(ftpClient.getReplyString());
+              System.out.println(ftpClient.getReplyString()); // on affiche la réponse du serveur si le transfert est raté
               this.dispose();
           }
           

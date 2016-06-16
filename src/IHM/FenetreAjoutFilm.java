@@ -47,6 +47,7 @@ boolean doModal ()
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBox1 = new javax.swing.JCheckBox();
         btnValider = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -57,6 +58,8 @@ boolean doModal ()
         txtAnnee = new javax.swing.JTextField();
         jComboBoxGenre = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
+
+        jCheckBox1.setText("jCheckBox1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -181,6 +184,7 @@ boolean doModal ()
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnValider;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBoxGenre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
