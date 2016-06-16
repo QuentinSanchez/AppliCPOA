@@ -5,6 +5,7 @@
  */
 package accesAuxDonnees;
 
+import Metier.Article;
 import Metier.Film;
 import Metier.Mariage;
 import Metier.Vip;
@@ -114,5 +115,47 @@ public class DAODivers {
         
          
      }
+     
+     
+     public void insérerArticle(Article article) throws SQLException
+     {
+         String requete = "select MAX(idArticle) from Articles";
+         
+          PreparedStatement pstmt = this.connexion.prepareStatement(requete);
+          
+        ResultSet rset=  pstmt.executeQuery();
+        
+        int idArticle = 0;
+        
+        while(rset.next())
+        {
+            idArticle = rset.getInt(1)+1;
+            
+        }
+          
+          
+         
+         
+         requete = "insert into Articles values(?,?,?,?,?,?,?)";
+         
+         
+          pstmt = this.connexion.prepareStatement(requete);
+         
+         pstmt.setInt(1,idArticle);
+         pstmt.setString(2,article.getTitre());
+         pstmt.setString(3,article.getAuteur());
+         pstmt.setString(4,article.getContenu());
+         pstmt.setString(5,article.getDate());
+         pstmt.setString(6,article.getHeure());
+          pstmt.setString(7,article.getNomPhoto());
+         
+         
+         pstmt.executeUpdate();
+         
+         pstmt.close();
+         
+         
+     }
+     
     
 }

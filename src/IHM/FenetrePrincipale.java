@@ -6,6 +6,7 @@
 package IHM;
 
 import Metier.AfficheFilm;
+import Metier.Article;
 import Metier.Film;
 import Metier.Mariage;
 import Metier.Photo;
@@ -14,13 +15,22 @@ import accesAuxDonnees.DAODivers;
 import accesAuxDonnees.DAOFilm;
 import accesAuxDonnees.DAOVIP;
 import accesAuxDonnees.SourceMySQL;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.PasswordAuthentication;
 import java.sql.Connection;
+
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
@@ -28,6 +38,9 @@ import javax.swing.JTable;
 import modeleComboBox.ComboBoxModele;
 import modeleTable.ModeleJTable;
 import modeleTable.ModeleJTableFilm;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPSClient;
+import sun.util.calendar.LocalGregorianCalendar.Date;
 
 
 /**
@@ -41,18 +54,24 @@ public class FenetrePrincipale extends javax.swing.JFrame {
    DAOFilm leDaoFilm ;
   SourceMySQL source ;
   
-  DAODivers leDaoDivers ;
+  DAODivers leDaoDivers ; 
   
   Vip vip ;
   
-  List<Mariage> listeMariage ;
+  List<Mariage> listeMariage ; // liste des mariages de la jcombobox des divorces
   
-  List<Vip> listeVip ;
+  List<Vip> listeVip ; // liste des Vip pour la fonctions mariage
   
   
-  ModeleJTable lemodele ;
+  ModeleJTable lemodele ;//modele de table pour les vip
   
-   ModeleJTableFilm lemodeleFilm ;
+   ModeleJTableFilm lemodeleFilm ; // modele de table pour les films
+   
+   private File f ; // fichier pour l'upload de photos pour les articles
+  
+  private String nomPhoto ; // nom de la photot de l'article uploadé
+  
+  private String nomF; // nom du fichier de l'article uploader
     
   
     public FenetrePrincipale(DAOVIP Dao,DAOFilm leDaoFilm, ModeleJTable modele, ModeleJTableFilm modeleFilm, DAODivers leDaoDivers) throws SQLException, Exception {
@@ -97,6 +116,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         btnSupprimer = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btnPhoto = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableFilm = new javax.swing.JTable();
@@ -104,6 +124,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         btnSupprimerFilm = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jComboBoxFilm = new javax.swing.JComboBox();
         jLabel11 = new javax.swing.JLabel();
@@ -113,7 +134,9 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jComboBoxRealisateur = new javax.swing.JComboBox();
         jButton6 = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel26 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jComboVip1 = new javax.swing.JComboBox();
@@ -134,6 +157,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         txtMois = new javax.swing.JTextField();
         txtJour = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jSeparator4 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         comboBoxMariage = new javax.swing.JComboBox();
         btnDivorcer = new javax.swing.JButton();
@@ -145,6 +170,28 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         txtMoisD = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         txtJourD = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        txtAuteur = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        txtTitre = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        txtDateArticle = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        txtHeure = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtContenu = new javax.swing.JTextArea();
+        jSeparator6 = new javax.swing.JSeparator();
+        jSeparator7 = new javax.swing.JSeparator();
+        btnPhotoArticle = new javax.swing.JButton();
+        txtNomPhotoA = new javax.swing.JTextField();
+        jLabel31 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -179,30 +226,40 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        jLabel27.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel27.setText("Liste des VIP");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                        .addComponent(btnPhoto)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnSupprimer)))
+                .addComponent(btnAjouterVip, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(btnPhoto)
+                .addGap(39, 39, 39)
+                .addComponent(btnSupprimer)
                 .addGap(30, 30, 30))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(206, 206, 206)
+                .addComponent(jLabel27)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGap(34, 34, 34)
+                .addComponent(jLabel27)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSupprimer)
                     .addComponent(btnAjouterVip)
@@ -244,32 +301,39 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        jLabel28.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel28.setText("Liste des Films");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                        .addComponent(jButton4)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSupprimerFilm)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5)
-                        .addGap(32, 32, 32))))
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(btnSupprimerFilm)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addGap(32, 32, 32))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(214, 214, 214)
+                .addComponent(jLabel28)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jLabel28)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton4)
@@ -319,72 +383,84 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
         });
 
+        jLabel26.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel26.setText("Casting");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addGap(69, 69, 69)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBoxFilm, 0, 97, Short.MAX_VALUE)
-                            .addComponent(jComboBoxActeur, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel20)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel16)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(60, 60, 60)
+                        .addComponent(jComboBoxFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator2))
+                .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(255, 255, 255)
+                        .addComponent(jLabel26))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel12)
+                        .addGap(86, 86, 86)
+                        .addComponent(jComboBoxActeur, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(jLabel20)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel16)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(102, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(235, 235, 235))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addContainerGap()
+                .addComponent(jLabel26)
+                .addGap(33, 33, 33)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(38, 38, 38)
+                    .addComponent(jLabel11)
+                    .addComponent(jComboBoxFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
                     .addComponent(jComboBoxActeur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16)
                     .addComponent(jLabel20)
-                    .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(116, 116, 116)
+                    .addComponent(jLabel16)
+                    .addComponent(jComboBoxRealisateur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87)
                 .addComponent(jButton6)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addGap(103, 103, 103))
         );
 
         jTabbedPane2.addTab("Casting", jPanel5);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 588, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 468, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Photo", jPanel6);
 
         jLabel2.setText("Liste des célibataires :");
 
         jComboVip1.setModel(new ComboBoxModele(this.leDao.getCelibataire(this.listeVip)) );
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel4.setText("Mariage");
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setText("VIP 1 :");
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("VIP 2 :");
 
         jLabel7.setText("Liste des célibataires :");
@@ -430,9 +506,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jLabel5))
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -445,59 +518,74 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
                                     .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel7))
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtLieux, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addComponent(jComboBoxVip2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(39, 39, 39)
+                                        .addComponent(jLabel8))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(25, 25, 25)
                                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                                .addComponent(jLabel13)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(txtAnnee, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jLabel14)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txtMois, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                                        .addComponent(jLabel13)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(txtAnnee, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addComponent(jLabel14)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(txtMois, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGap(18, 18, 18)
                                                 .addComponent(jLabel15))
-                                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                                    .addComponent(jComboBoxVip2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(jLabel8))
-                                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                                .addGap(39, 39, 39)
-                                                .addComponent(btnAjouterVip2))
-                                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                                .addGap(1, 1, 1)
-                                                .addComponent(txtJour, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))))))
-                .addContainerGap(140, Short.MAX_VALUE))
+                                            .addComponent(txtLieux, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
+                                        .addComponent(txtJour, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(btnAjouterVip2))))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(227, 227, 227)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(122, Short.MAX_VALUE))
+            .addComponent(jSeparator3)
+            .addComponent(jSeparator4)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addComponent(jLabel4)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboVip1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel6)
-                .addGap(35, 35, 35)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jComboBoxVip2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(btnAjouterVip2))
-                .addGap(28, 28, 28)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel8)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jComboBoxVip2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(btnAjouterVip2)))
+                .addGap(52, 52, 52)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(txtAnnee, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -506,13 +594,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                     .addComponent(txtMois, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtJour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
-                .addGap(18, 18, 18)
+                .addGap(41, 41, 41)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtLieux, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(34, 34, 34))
+                .addGap(35, 35, 35))
         );
 
         jTabbedPane2.addTab("Mariage", jPanel3);
@@ -542,64 +630,213 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
         jLabel19.setText("jj");
 
+        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel29.setText("Divorce");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comboBoxMariage, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 195, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(252, 252, 252)
+                        .addComponent(jLabel29))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(188, 188, 188))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnDivorcer, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(119, 119, 119))))))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel17)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMoisD, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel19)
-                .addGap(1, 1, 1)
-                .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboBoxMariage, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDivorcer, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(30, 30, 30)
+                                .addComponent(jLabel17)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel18)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMoisD, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 73, Short.MAX_VALUE))
+            .addComponent(jSeparator5)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(comboBoxMariage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel29)
+                .addGap(79, 79, 79)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboBoxMariage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17)
+                    .addComponent(txtAnneeD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)
                     .addComponent(txtMoisD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtJourD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                .addGap(63, 63, 63)
                 .addComponent(btnDivorcer)
-                .addGap(131, 131, 131))
+                .addGap(135, 135, 135))
         );
 
         //jComboBox1.setModel(new ComboBoxModele(this.leDao.vipMarié()));
 
         jTabbedPane2.addTab("Divorce", jPanel2);
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel21.setText("Contenu :");
+
+        jLabel22.setText("Auteur :");
+
+        jLabel23.setText("titre :");
+
+        jLabel24.setText("Date :");
+
+        jLabel25.setText("Heure :");
+
+        jButton7.setText("Générer l'article");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Génerer date et heure du jour");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel30.setText("Article");
+
+        txtContenu.setColumns(20);
+        txtContenu.setRows(5);
+        jScrollPane3.setViewportView(txtContenu);
+
+        btnPhotoArticle.setText("Choisir un photo");
+        btnPhotoArticle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhotoArticleActionPerformed(evt);
+            }
+        });
+
+        txtNomPhotoA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomPhotoAActionPerformed(evt);
+            }
+        });
+
+        jLabel31.setText("Nom de la photo :");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator6)
+            .addComponent(jSeparator7)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(224, 224, 224)
+                                .addComponent(jButton7))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(242, 242, 242)
+                                .addComponent(jLabel30))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(252, 252, 252)
+                                .addComponent(jLabel21))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(btnPhotoArticle)
+                                .addGap(59, 59, 59)
+                                .addComponent(jLabel31)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNomPhotoA, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 94, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel23)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtTitre, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtAuteur, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jButton8))
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel24)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtDateArticle, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                    .addComponent(jLabel25)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtHeure, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(54, 54, 54)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel30)
+                .addGap(5, 5, 5)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTitre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23)
+                    .addComponent(txtDateArticle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel24))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtAuteur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22)
+                    .addComponent(txtHeure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25))
+                .addGap(11, 11, 11)
+                .addComponent(jButton8)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPhotoArticle)
+                    .addComponent(jLabel31)
+                    .addComponent(txtNomPhotoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(jLabel21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton7)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("Article", jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -618,6 +855,208 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtMoisDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMoisDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMoisDActionPerformed
+
+    private void btnDivorcerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorcerActionPerformed
+
+        if (!(txtAnneeD.getText().equals("")) && !(comboBoxMariage.getSelectedIndex() == -1) &&!(txtMoisD.getText().equals(""))  &&!(txtJourD.getText().equals("")) )
+        {
+
+            try {
+
+                int index = comboBoxMariage.getSelectedIndex();
+
+                String dateD = txtAnneeD.getText() +"-"+txtMoisD.getText()+"-"+txtJourD.getText() ; // récupération de la date et mise au format mySQL
+                this.leDao.divorcerVip(this.listeMariage.get(comboBoxMariage.getSelectedIndex()),dateD); // on divorce les vips du mariage sélectioné dans la comboBox
+
+                this.listeMariage.remove(index); // on retire le mariage "divorcé"
+
+                this.comboBoxMariage.setModel(new ComboBoxModele(this.leDao.vipMarié(this.listeMariage))); // on réinitialise les combobox des vip célibataire et mariage pour les mettres a jour
+                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip)));
+                this.jComboVip1.setModel((new ComboBoxModele(leDao.getCelibataire(listeVip))));
+                
+                txtMoisD.setText("");
+                txtAnneeD.setText("");    // on réinitialise les différents champs
+                txtJourD.setText("");
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this,"le format de la date est mauvais, il boit etre come suivant" , "attention", INFORMATION_MESSAGE);
+
+            }
+
+        }
+        else
+
+        {
+
+            JOptionPane.showMessageDialog(this,"attention vous n'avez pas renseigné la date ou le mariage" , "attention", INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDivorcerActionPerformed
+
+    private void txtMoisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMoisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMoisActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        Vip vip1 = listeVip.get(this.jComboVip1.getSelectedIndex());
+        Vip vip2 = listeVip.get(this.jComboBoxVip2.getSelectedIndex());  // on récupére les vips sélectionnés
+
+        if ( vip1.equals(vip2))
+        {
+            JOptionPane.showMessageDialog(this,"vous ne pouvez pas marier un Vip avec lui même" , "attention", INFORMATION_MESSAGE);
+
+        }
+        else
+        {
+
+            try {
+
+                String date = txtAnnee.getText() +"-"+txtMois.getText()+"-"+txtJour.getText() ; // mise au format de la date
+                leDao.marierVip(vip1, vip2, date, txtLieux.getText());
+
+                txtAnnee.setText("");
+                txtLieux.setText(""); // on réinitialise les différents champs
+
+                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip))); //on réinitialise les combobox des vip célibataire et mariage pour les mettres a jour
+                this.jComboVip1.setModel((new ComboBoxModele(leDao.getCelibataire(listeVip))));
+
+                this.comboBoxMariage.setModel(new ComboBoxModele(this.leDao.vipMarié(this.listeMariage)));
+            } catch (SQLException ex) {
+                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnAjouterVip2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVip2ActionPerformed
+        FenetreAjoutVip fen = null;
+      try {
+          fen = new FenetreAjoutVip(this, vip, this.leDaoDivers, this.leDao.getDernierNumero());
+      } catch (SQLException ex) {
+          Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+      }
+
+        if ( fen.doModal() == true)
+        {
+            try {
+                lemodele.insererVIP(vip);
+
+                this.listeVip.add(vip);
+
+                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip)));
+
+                this.jComboBoxVip2.setSelectedItem((vip.getNom())+"-"+vip.getNumVip()); // on sélectionne le vip créé dans la comboBox
+
+            } catch (SQLException ex) {
+                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_btnAjouterVip2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+
+        if ( jComboBoxFilm.getSelectedIndex() == -1)
+        {
+            JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
+
+        }
+        else{
+
+            String nomFilm = (String) this.jComboBoxFilm.getSelectedItem();
+
+            int numVisa = Integer.parseInt(nomFilm.split("_")[0]);
+            // on teste que l'utilisateur est bien séléctionné un realisateur ou un acteur mais pas les deux
+            if ( (jComboBoxActeur.getSelectedIndex() == -1 && jComboBoxRealisateur.getSelectedIndex()==-1)||(jComboBoxActeur.getSelectedIndex() != -1 && jComboBoxRealisateur.getSelectedIndex()!=-1) )
+            {
+                JOptionPane.showMessageDialog(this,"vous devez sélectionner un acteur ou un realisateur" , "attention", INFORMATION_MESSAGE);
+
+                jComboBoxActeur.setSelectedIndex(-1);   // on fait en sorte que les jcombobox n'aient aucun item séléctionné
+
+                jComboBoxRealisateur.setSelectedIndex(-1);
+
+            }
+            else if (jComboBoxActeur.getSelectedIndex() != -1)
+            {
+
+                String nomActeur = (String) this.jComboBoxActeur.getSelectedItem();
+
+                int numActeur = Integer.parseInt(nomActeur.split("_")[1]); // on récupére le numeroVip 
+
+                try {
+                    this.leDaoDivers.insererCasting(numActeur, numVisa, "A");
+                    jComboBoxActeur.setSelectedIndex(-1); // on fait en sorte que les jcombobox n'aient aucun item séléctionné
+
+                    jComboBoxFilm.setSelectedIndex(-1);
+
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+
+                    Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            else
+            {
+                String nomRealisateur = (String) this.jComboBoxRealisateur.getSelectedItem();
+
+                int numRealisateur = Integer.parseInt(nomRealisateur.split("_")[1]);// on récupére le numeroVip 
+
+                try {
+                    this.leDaoDivers.insererCasting(numRealisateur, numVisa, "R");
+
+                    jComboBoxFilm.setSelectedIndex(-1); // on fait en sorte que les jcombobox n'aient aucun item séléctionné
+
+                    jComboBoxRealisateur.setSelectedIndex(-1);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+
+                    Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int leNumero = -1 ;
+
+        int ligne = this.tableFilm.getSelectedRow();
+
+        if(ligne!= -1) // on teste que l'utilisateur ait bien séléctionné un film
+        {
+
+            leNumero =(int) lemodeleFilm.getValueAt(ligne,0); // récupére le  numéro de Visa du film séléctionné
+
+            AfficheFilm afficheAjoutee = new AfficheFilm();
+
+            FenetreAjoutAffiche fen6 = new FenetreAjoutAffiche(this, afficheAjoutee, leNumero);
+
+            if ( fen6.doModal() ==true)
+            {
+
+                try {
+                    this.leDaoFilm.ajoutAffiche(afficheAjoutee);
+                } catch (SQLException ex) {
+                    Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+
+                    JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
+
+                }
+
+            }
+
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void btnSupprimerFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupprimerFilmActionPerformed
 
@@ -645,11 +1084,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         {
             try {
 
-                leNumero =(int) lemodeleFilm.getValueAt(ligne,0);
+                leNumero =(int) lemodeleFilm.getValueAt(ligne,0); // on récupére le numéro de Visa du film séléctionné
 
                 Film leFilmM = leDaoFilm.getFilm(leNumero);
 
-                FenetreModificationFilm fen4 = new FenetreModificationFilm(this, leFilmM);
+                FenetreModificationFilm fen4 = new FenetreModificationFilm(this, leFilmM, this.leDaoDivers);
 
                 fen4.remplirChamps();
 
@@ -677,97 +1116,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             try {
                 lemodeleFilm.insererFilm(unFilm);
             } catch (SQLException ex) {
-                           JOptionPane.showMessageDialog(this,"erreur sur les informations, verifier que le numero de Visa ne soit pas dupliqué" , "attention", INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"erreur sur les informations, verifier que le numero de Visa ne soit pas dupliqué ou que le type des champs soit correct" , "attention", INFORMATION_MESSAGE);
             }
 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void btnDivorcerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDivorcerActionPerformed
-
-        if (!(txtAnneeD.getText().equals("")) && !(comboBoxMariage.getSelectedIndex() == -1) &&!(txtMoisD.getText().equals(""))  &&!(txtJourD.getText().equals("")) )
-        {
-
-            try {
-
-                int index = comboBoxMariage.getSelectedIndex();
-                
-                 String dateD = txtAnneeD.getText() +"-"+txtMoisD.getText()+"-"+txtJourD.getText() ;
-                this.leDao.divorcerVip(this.listeMariage.get(comboBoxMariage.getSelectedIndex()),dateD );
-
-                this.listeMariage.remove(index);
-
-                this.comboBoxMariage.setModel(new ComboBoxModele(this.leDao.vipMarié(this.listeMariage)));
-                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip)));
-                this.jComboVip1.setModel((new ComboBoxModele(leDao.getCelibataire(listeVip))));
-
-            } catch (SQLException ex) {
-                           JOptionPane.showMessageDialog(this,"le format de la date est mauvais, il boit etre come suivant" , "attention", INFORMATION_MESSAGE);
-
-            }
-
-        }
-        else
-
-        {
-
-            JOptionPane.showMessageDialog(this,"attention vous n'avez pas renseigné la date ou le mariage" , "attention", INFORMATION_MESSAGE);
-        }
-    }//GEN-LAST:event_btnDivorcerActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        Vip vip1 = listeVip.get(this.jComboVip1.getSelectedIndex());
-        Vip vip2 = listeVip.get(this.jComboBoxVip2.getSelectedIndex());
-
-        if ( vip1.equals(vip2))
-        {
-            JOptionPane.showMessageDialog(this,"vous ne pouvez pas marier un Vip avec lui même" , "attention", INFORMATION_MESSAGE);
-
-        }
-        else
-        {
-
-            try {
-                
-                String date = txtAnnee.getText() +"-"+txtMois.getText()+"-"+txtJour.getText() ;
-                leDao.marierVip(vip1, vip2, date, txtLieux.getText());
-
-                txtAnnee.setText("");
-                txtLieux.setText("");
-
-                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip)));
-                this.jComboVip1.setModel((new ComboBoxModele(leDao.getCelibataire(listeVip))));
-
-                this.comboBoxMariage.setModel(new ComboBoxModele(this.leDao.vipMarié(this.listeMariage)));
-            } catch (SQLException ex) {
-                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void btnAjouterVip2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVip2ActionPerformed
-        FenetreModifierVip fen = new FenetreModifierVip(this, vip);
-
-        if ( fen.doModal() == true)
-        {
-            try {
-                lemodele.insererVIP(vip);
-
-                this.listeVip.add(vip);
-
-                this.jComboBoxVip2.setModel(new ComboBoxModele(leDao.getCelibataire(listeVip)));
-
-                this.jComboBoxVip2.setSelectedItem((vip.getNom())+"-"+vip.getNumVip());
-
-            } catch (SQLException ex) {
-                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }//GEN-LAST:event_btnAjouterVip2ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhotoActionPerformed
 
         int leNumero = -1 ;
 
@@ -775,13 +1130,61 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
         if(ligne!= -1)
         {
+
+            leNumero =(int) lemodele.getValueAt(ligne,0); // on récupére le numéro du vip séléctionné
+
+            Photo photoAjoutée = new Photo(leNumero);
+
+            FenetreAjoutPhoto fen5 = new FenetreAjoutPhoto(this,photoAjoutée);
+
+            if ( fen5.doModal() ==true)
+            {
+
+                if( photoAjoutée.getTypePhoto() == 1) // si le type photo = 1, alors c'est une photo classique
+
+                {   try {
+                    this.leDao.ajouterPhoto(photoAjoutée);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
+                }
+            }
+                else  // sinon c'est une photo de profil
+            {
+
+                try {
+                    this.leDao.ajouterPhotoProfil(photoAjoutée);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
+                }
+            }
+
+        }
+
+        }
+        else
+        {
+
+            JOptionPane.showMessageDialog(this,"vous n'avez pas séléctioné de Vip" , "attention", INFORMATION_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_btnPhotoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        int leNumero = -1 ;
+
+        int ligne = this.tableVip.getSelectedRow();
+
+        if(ligne!= -1) // on vérifie que l'utilisateur est bien sélectionné un numéro
+        {
             try {
 
-                leNumero =(int) lemodele.getValueAt(ligne,0);
+                leNumero =(int) lemodele.getValueAt(ligne,0);// on récupére le numéro du vip séléctionné
 
                 Vip vipModifier = leDao.getVip(leNumero);
 
-                FenetreModifierVip fen2 = new FenetreModifierVip(this, vipModifier);
+                FenetreModifierVip fen2 = new FenetreModifierVip(this, vipModifier, this.leDaoDivers);
 
                 fen2.remplirChamps();
 
@@ -793,7 +1196,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 }
 
             } catch (SQLException ex) {
-                           JOptionPane.showMessageDialog(this,"erreur sur les informations, verifier que le numero de Vip ne soit pas dupliqué ou que la date soit au bon format" , "attention", INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this,"erreur sur les informations, verifier que le numero de Vip ne soit pas dupliqué ou que la date soit au bon format" , "attention", INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -817,207 +1220,196 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private void btnAjouterVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterVipActionPerformed
 
         Vip vipAjouter = new Vip();
+        
+        
 
-        FenetreAjoutVip fen = new FenetreAjoutVip(this, vipAjouter, this.leDaoDivers );
+        FenetreAjoutVip fen = null;
+      try {
+          fen = new FenetreAjoutVip(this, vipAjouter, this.leDaoDivers,this.leDao.getDernierNumero()  ); // on instancie une fenetre d'ajout de Vip , en lui donnant en parametre le dernier numeroVip utilisé
+      } catch (SQLException ex) {
+          Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+      }
 
         if ( fen.doModal() == true)
         {
-           
+
             try {
                 lemodele.insererVIP(vipAjouter );
             } catch (SQLException ex) {
                 Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
 
         }
     }//GEN-LAST:event_btnAjouterVipActionPerformed
 
-    private void txtMoisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMoisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMoisActionPerformed
-
-    private void txtMoisDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMoisDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMoisDActionPerformed
-
-    private void btnPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhotoActionPerformed
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         
-        int leNumero = -1 ;
-
-        int ligne = this.tableVip.getSelectedRow();
-
-        if(ligne!= -1)
-        {
-            
-
-                leNumero =(int) lemodele.getValueAt(ligne,0);
-                
+     if ( !txtTitre.getText().equals("") && !txtAuteur.getText().equals("") && !txtContenu.getText().equals("") && !txtDateArticle.getText().equals("") && !txtHeure.getText().equals("")) // on vérifie que tous les champs soit remplie
+     {   
+        Article article = new Article();
+      
+        article.setTitre(txtTitre.getText());
+        article.setAuteur(txtAuteur.getText());
+        article.setContenu(txtContenu.getText());  //on récupere tous les champs
+        article.setDate(txtDateArticle.getText());
         
+        article.setHeure(txtHeure.getText());
         
-        Photo photoAjoutée = new Photo(leNumero);
-        
-        FenetreAjoutPhoto fen5 = new FenetreAjoutPhoto(this,photoAjoutée);
-        
-        
-        if ( fen5.doModal() ==true)
-        {
-            
-           
-                
-                if( photoAjoutée.getTypePhoto() == 1)
-                
-                {   try {
-                    this.leDao.ajouterPhoto(photoAjoutée);
-                    } catch (SQLException ex) {
-                                                           JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
-                    }
-}
-                else
-                {
-                    
-                    try {
-                        this.leDao.ajouterPhotoProfil(photoAjoutée);
-                    } catch (SQLException ex) {
-                                                           JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
-                    }
-                }
-                
-
-                
-           
-            
-        }
-         
-        }
-        else
-        {
-            
-                                       JOptionPane.showMessageDialog(this,"vous n'avez pas séléctioné de Vip" , "attention", INFORMATION_MESSAGE);
-
-        }
-        
-        
-    }//GEN-LAST:event_btnPhotoActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-           int leNumero = -1 ;
-
-        int ligne = this.tableFilm.getSelectedRow();
-
-        if(ligne!= -1)
-        {
-            
-
-                leNumero =(int) lemodeleFilm.getValueAt(ligne,0);
-                
-        
-        
-       AfficheFilm afficheAjoutee = new AfficheFilm();
-        
-     FenetreAjoutAffiche fen6 = new FenetreAjoutAffiche(this, afficheAjoutee, leNumero);
-        
-        
-        if ( fen6.doModal() ==true)
-        {
-            
-                    try {
-                        this.leDaoFilm.ajoutAffiche(afficheAjoutee);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
-                        
-                               JOptionPane.showMessageDialog(this,"probleme lors de l'insertion dans la base, vérifier que la photo n'existe pas déjà" , "attention", INFORMATION_MESSAGE);
-
-                    }
-                
+         try {                                         
+          FileInputStream input = null;
+          try {
+              input = new FileInputStream(nomF);
               
-                  
-                    
-                }
-                
+              
+          } catch (FileNotFoundException ex) {
+              Logger.getLogger(FenetreAjoutPhoto.class.getName()).log(Level.SEVERE, null, ex);
+          }
+          FTPSClient ftpClient = new FTPSClient();
+          
+           if(!txtNomPhotoA.getText().equals("")) 
+           {
+          ftpClient.connect("iutdoua-samba.univ-lyon1.fr",990);  // on créé la connexion ftp
+          Properties props = new Properties();
+        FileInputStream fichier = new FileInputStream("src/info.properties");
+        props.load(fichier);
+          ftpClient.login(props.getProperty("login"), props.getProperty("password"));  // on rentre le password et le login
+          
+          System.out.println(ftpClient.getReplyString());
+          
+          
+          
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
-                
-           
-            
+    ftpClient.setFileTransferMode(FTP.BINARY_FILE_TYPE);    // on met le mode de transfert en fichier binaire
+     ftpClient.enterLocalPassiveMode();
+     
+     String remote ;
+     
+    
+          remote = "public_html/CPOA/Site/assets/imagesArticles/" + txtNomPhotoA.getText() ; // on spécifie le lieu de dépot du fichier ainsi qu son nom
+          
+           boolean done = ftpClient.storeFile(remote, input); // on upload le fichier
+          input.close();
+          
+          if( done) //si le fichier a réussi
+          {
+              article.setNomPhoto(txtNomPhotoA.getText());
+              
+              System.out.println("reussi");
+              
+              System.out.println(ftpClient.getReplyString());
+              
+              
+          }
+          else
+          {
+              article.setNomPhoto("NULL");
+              System.out.println(ftpClient.getReplyString());
+              
+              throw new Exception(); // si l'upload n'a pas réussi, on interromp la création de l'article et on en informe l'utilisateur
+              
+             
+          }
+          
+          
+          
+          
+     
+           }
+         }
+     
+         catch(Exception E)
+         {
+             
+             
+                         JOptionPane.showMessageDialog(this,"erreur lors de l'upload de la photo" , "attention", INFORMATION_MESSAGE); // si il y a eu un probleme d'upload
+
         
          
-        } 
-        else
-        {
-                              JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
+           
+         }
+      try {
+          
+          this.leDaoDivers.insérerArticle(article);
+          
+      } catch (SQLException ex) {
+          Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      
+      this.txtContenu.setText("");
+      txtHeure.setText("");
+      
+      txtDateArticle.setText("");    // on remet tous les champs a vide
+      txtTitre.setText("");
+      
+      txtAuteur.setText("");
+      txtNomPhotoA.setText("");
+        
+      this.nomF = "";
+      
+      this.nomPhoto = "";
+     }
+     
+     else
+     {
+                         JOptionPane.showMessageDialog(this,"vous devez remplir tous les champs( excepté photo qui est optionel)" , "attention", INFORMATION_MESSAGE);
 
-            
-        }
+         
+     }
         
-    }//GEN-LAST:event_jButton5ActionPerformed
+        
+    }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       
-        if ( jComboBoxFilm.getSelectedIndex() == -1)
-        {
-             JOptionPane.showMessageDialog(this,"vous devez sélectionner un film" , "attention", INFORMATION_MESSAGE);
-    
-            
-        }
-        else{
-            
-        
-        
-        String nomFilm = (String) this.jComboBoxFilm.getSelectedItem();
-        
-        int numVisa = Integer.parseInt(nomFilm.split("-")[0]);
-        
-        if ( (jComboBoxActeur.getSelectedIndex() == -1 && jComboBoxRealisateur.getSelectedIndex()==-1)||(jComboBoxActeur.getSelectedIndex() != -1 && jComboBoxRealisateur.getSelectedIndex()!=-1) )
-        {
-                                          JOptionPane.showMessageDialog(this,"vous devez sélectionner un acteur ou un realisateur" , "attention", INFORMATION_MESSAGE);
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+         String format = "dd/MM/yy H:mm:ss"; 
 
-            jComboBoxActeur.setSelectedIndex(-1);
-            
-            jComboBoxRealisateur.setSelectedIndex(-1);
-            
-        }
-        else if (jComboBoxActeur.getSelectedIndex() != -1)
-        {
-             
-        String nomActeur = (String) this.jComboBoxActeur.getSelectedItem();
+        java.text.SimpleDateFormat formater = new java.text.SimpleDateFormat( format ); 
+        java.util.Date date = new java.util.Date();   // on récupére la date et l'heure du jour au format  "dd/MM/yy H:mm:ss"
         
-        int numActeur = Integer.parseInt(nomActeur.split("-")[1]);
         
-            try {
-                this.leDaoDivers.insererCasting(numActeur, numVisa, "A");
-                  jComboBoxActeur.setSelectedIndex(-1);
-            
-                 jComboBoxFilm.setSelectedIndex(-1);
-             
-             
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+        String hd[] = formater.format(date).split(" ") ; // on coupe en deux au caractére espace, cela permet de récupérer la date et l'heure séparement
+        
+        
+        
+        txtDateArticle.setText(hd[0].replaceAll("[/]", "-")); // on remplace les / par des - pour mettre la date au format mySQL
+        
+        txtHeure.setText(hd[1]);
+    }//GEN-LAST:event_jButton8ActionPerformed
 
-                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        else
+    private void btnPhotoArticleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhotoArticleActionPerformed
+         JFileChooser chooser = new JFileChooser( new File(".")); // on fait selectionner a l'utilsateur le fichier voulie
+        
+        chooser.setDialogTitle("ouvrir une image");
+        
+        int reponse = chooser.showOpenDialog(this);
+        
+        if (reponse == JFileChooser.APPROVE_OPTION)
         {
-             String nomRealisateur = (String) this.jComboBoxRealisateur.getSelectedItem();
-        
-        int numRealisateur = Integer.parseInt(nomRealisateur.split("-")[1]);
-        
-            try {
-                this.leDaoDivers.insererCasting(numRealisateur, numVisa, "R");
+            
+             InputStream input = null;
+           
+                f = chooser.getSelectedFile(); // on récupére le fichir
                 
-                  jComboBoxFilm.setSelectedIndex(-1);
+                
+               nomPhoto = f.getName() ; // on récupére le nom de fichier
+                nomF = f.getAbsolutePath(); // on récupere le chemin absolue du ficheir
+                
+               
+                txtNomPhotoA.setText(nomPhoto);
+                
+                
+                
+                
+                
+     
             
-            jComboBoxRealisateur.setSelectedIndex(-1);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this,"erreur lors de l'insertion, verifier que le casting ne soit pas déjà inséré" , "attention", INFORMATION_MESSAGE);
+          
+        }
+    }//GEN-LAST:event_btnPhotoArticleActionPerformed
 
-                Logger.getLogger(FenetrePrincipale.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void txtNomPhotoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomPhotoAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomPhotoAActionPerformed
 
   
   
@@ -1027,6 +1419,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JButton btnAjouterVip2;
     private javax.swing.JButton btnDivorcer;
     private javax.swing.JButton btnPhoto;
+    private javax.swing.JButton btnPhotoArticle;
     private javax.swing.JButton btnSupprimer;
     private javax.swing.JButton btnSupprimerFilm;
     private javax.swing.JComboBox comboBoxMariage;
@@ -1036,6 +1429,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox jComboBoxActeur;
     private javax.swing.JComboBox jComboBoxFilm;
     private javax.swing.JComboBox jComboBoxRealisateur;
@@ -1054,7 +1449,18 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1069,16 +1475,30 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable tableFilm;
     private javax.swing.JTable tableVip;
     private javax.swing.JTextField txtAnnee;
     private javax.swing.JTextField txtAnneeD;
+    private javax.swing.JTextField txtAuteur;
+    private javax.swing.JTextArea txtContenu;
+    private javax.swing.JTextField txtDateArticle;
+    private javax.swing.JTextField txtHeure;
     private javax.swing.JTextField txtJour;
     private javax.swing.JTextField txtJourD;
     private javax.swing.JTextField txtLieux;
     private javax.swing.JTextField txtMois;
     private javax.swing.JTextField txtMoisD;
+    private javax.swing.JTextField txtNomPhotoA;
+    private javax.swing.JTextField txtTitre;
     // End of variables declaration//GEN-END:variables
 }

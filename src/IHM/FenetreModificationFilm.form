@@ -34,10 +34,10 @@
               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnValider" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtGenre" alignment="0" pref="86" max="32767" attributes="0"/>
-                  <Component id="txtAnnee" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtAnnee" alignment="0" pref="86" max="32767" attributes="0"/>
                   <Component id="txtTitre" alignment="0" max="32767" attributes="0"/>
                   <Component id="txtVisa" max="32767" attributes="0"/>
+                  <Component id="jComboBoxGenre" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="107" max="32767" attributes="0"/>
           </Group>
@@ -64,7 +64,7 @@
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtGenre" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxGenre" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="50" max="32767" attributes="0"/>
               <Component id="btnValider" min="-2" max="-2" attributes="0"/>
@@ -108,7 +108,16 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtAnnee">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtGenre">
+    <Component class="javax.swing.JComboBox" name="jComboBoxGenre">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ComboBoxModele ( this.leDaoDivers.getGenre())" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="}&#xa;catch( Exception E)&#xa;{&#xa;&#xa;&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try{"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

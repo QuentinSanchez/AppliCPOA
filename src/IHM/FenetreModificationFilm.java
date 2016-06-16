@@ -6,6 +6,8 @@
 package IHM;
 
 import Metier.Film;
+import accesAuxDonnees.DAODivers;
+import modeleComboBox.ComboBoxModele;
 
 /**
  *
@@ -17,10 +19,13 @@ public class FenetreModificationFilm extends javax.swing.JDialog {
        Film leFilm ;
     
     boolean etat ;
-    public FenetreModificationFilm(java.awt.Frame parent, Film leFilm) {
+    
+    
+    DAODivers leDaoDivers ;
+    public FenetreModificationFilm(java.awt.Frame parent, Film leFilm, DAODivers leDao) {
         super(parent, true);
         this.leFilm = leFilm ;
-        
+        this.leDaoDivers = leDao ;
         
         initComponents();
     }
@@ -40,7 +45,9 @@ boolean doModal ()
        txtVisa.setText(String.valueOf(this.leFilm.getNumVisa()));
        txtTitre.setText(this.leFilm.getTitre());
        txtAnnee.setText(this.leFilm.getAnnee());
-       txtGenre.setText(this.leFilm.getLibelleGenre());
+       
+       
+       this.jComboBoxGenre.setSelectedItem(leFilm.getLibelleGenre());
        
        
       
@@ -60,7 +67,7 @@ boolean doModal ()
         txtVisa = new javax.swing.JTextField();
         txtTitre = new javax.swing.JTextField();
         txtAnnee = new javax.swing.JTextField();
-        txtGenre = new javax.swing.JTextField();
+        jComboBoxGenre = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -79,6 +86,14 @@ boolean doModal ()
 
         jLabel4.setText("libelleGenre :");
 
+        try{
+            jComboBoxGenre.setModel(new ComboBoxModele ( this.leDaoDivers.getGenre()));
+        }
+        catch( Exception E)
+        {
+
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,10 +108,10 @@ boolean doModal ()
                 .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnValider)
-                    .addComponent(txtGenre, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                    .addComponent(txtAnnee)
+                    .addComponent(txtAnnee, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                     .addComponent(txtTitre)
-                    .addComponent(txtVisa))
+                    .addComponent(txtVisa)
+                    .addComponent(jComboBoxGenre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -117,7 +132,7 @@ boolean doModal ()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(btnValider)
                 .addGap(25, 25, 25))
@@ -127,14 +142,19 @@ boolean doModal ()
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValiderActionPerformed
+       
+        
+        
+        
        this.leFilm.setNumVisa(Integer.parseInt(txtVisa.getText()));
        this.leFilm.setTitre(txtTitre.getText());
        this.leFilm.setAnnee(txtAnnee.getText());
-       this.leFilm.setLibelleGenre(txtGenre.getText());
+       this.leFilm.setLibelleGenre((String) this.jComboBoxGenre.getSelectedItem());
        
        etat = true ;
        
        this.dispose(); 
+        
     }//GEN-LAST:event_btnValiderActionPerformed
 
   
@@ -142,12 +162,12 @@ boolean doModal ()
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnValider;
+    private javax.swing.JComboBox jComboBoxGenre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtAnnee;
-    private javax.swing.JTextField txtGenre;
     private javax.swing.JTextField txtTitre;
     private javax.swing.JTextField txtVisa;
     // End of variables declaration//GEN-END:variables

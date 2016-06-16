@@ -90,9 +90,20 @@ public class DAOFilm {
        
         public void supprimerFilm(Film leFilm) throws SQLException
     {
-        String requete = " delete from Film where numVisa = ?";
+         String requete = " delete from AfficheFilm where numVisa = ?";
         
          PreparedStatement pstmt = connexion.prepareStatement(requete);
+         
+         pstmt.setString(1,String.valueOf(leFilm.getNumVisa()));
+         
+         pstmt.executeUpdate();
+         
+                
+                
+                
+      requete = " delete from Film where numVisa = ?";
+        
+          pstmt = connexion.prepareStatement(requete);
          
          pstmt.setString(1,String.valueOf(leFilm.getNumVisa()));
          
@@ -196,7 +207,7 @@ public class DAOFilm {
         
         
         
-        listeFilm.add(numVisa + "-"+titre);
+        listeFilm.add(numVisa + "_"+titre);
             
            
         }

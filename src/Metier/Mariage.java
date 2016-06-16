@@ -18,6 +18,18 @@ public class Mariage {
     private int numVip ;
     
     private int numVipConjoint ;
+    
+    
+    private String date ;
+
+    public Mariage(int numVip, int numVipConjoint, String date) {
+        this.numVip = numVip;
+        this.numVipConjoint = numVipConjoint;
+        this.date = date;
+    }
+    
+    
+    
 
     public Mariage(int numVip, int numVipConjoint) {
         this.numVip = numVip;
@@ -32,6 +44,12 @@ public class Mariage {
         return numVipConjoint;
     }
 
+    public String getDate() {
+        return date;
+    }
+    
+    
+
     public void setNumVip(int numVip) {
         this.numVip = numVip;
     }
@@ -39,6 +57,11 @@ public class Mariage {
     public void setNumVipConjoint(int numVipConjoint) {
         this.numVipConjoint = numVipConjoint;
     }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
 
     @Override
     public int hashCode() {

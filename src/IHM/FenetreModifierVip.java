@@ -6,6 +6,8 @@
 package IHM;
 
 import Metier.Vip;
+import accesAuxDonnees.DAODivers;
+import modeleComboBox.ComboBoxModele;
 
 /**
  *
@@ -16,11 +18,18 @@ public class FenetreModifierVip extends javax.swing.JDialog {
     Vip leVip ;
     
     boolean etat ;
-    public FenetreModifierVip(java.awt.Frame parent, Vip vip) {
+    
+    
+    DAODivers leDaoDivers ;
+    public FenetreModifierVip(java.awt.Frame parent, Vip vip,DAODivers leDaoDivers) {
         super(parent, true);
         
         this.leVip = vip ;
+        
+        this.leDaoDivers = leDaoDivers ;
         initComponents();
+        
+        this.txtNumVip.setEnabled(false);
     }
 
    boolean doModal ()
@@ -57,7 +66,12 @@ public class FenetreModifierVip extends javax.swing.JDialog {
          {
        
         this.radioBtnARM.setSelected(true);
-   }
+   }else
+     {
+         
+         this.radioBtnAutreM.setSelected(true);
+         
+     }
       
      
      if( this.leVip.getCodeStatut().equals("C"))
@@ -75,7 +89,7 @@ public class FenetreModifierVip extends javax.swing.JDialog {
       
        txtDateNaissance.setText(this.leVip.getDateNaissance());
        txtLieuxNaissance.setText(this.leVip.getLieuxNaissance());
-       txtPays.setText(this.leVip.getPays());
+       this.jComboBoxPays.setSelectedItem(this.leVip.getPays());
        
        
       if(this.leVip.getCivilitee().equals("Mr"))
@@ -115,7 +129,6 @@ public class FenetreModifierVip extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        txtPays = new javax.swing.JTextField();
         btnCreerVip = new javax.swing.JButton();
         radioBtnMmeM = new javax.swing.JRadioButton();
         radioBtnMrM = new javax.swing.JRadioButton();
@@ -127,6 +140,9 @@ public class FenetreModifierVip extends javax.swing.JDialog {
         radioBtnMarieM = new javax.swing.JRadioButton();
         radioBtnCelibataireM = new javax.swing.JRadioButton();
         jLabel8 = new javax.swing.JLabel();
+        radioBtnAutreM = new javax.swing.JRadioButton();
+        jComboBoxPays = new javax.swing.JComboBox();
+        jLabel10 = new javax.swing.JLabel();
 
         buttonGroupCM.add(radioBtnMrM);
         buttonGroupCM.add(radioBtnMmeM);
@@ -134,6 +150,7 @@ public class FenetreModifierVip extends javax.swing.JDialog {
         buttonGroupCodeActeurM.add(radioBtnActeurM);
         buttonGroupCodeActeurM.add(radioBtnRealisateurM);
         buttonGroupCodeActeurM.add(radioBtnARM);
+        buttonGroupCodeActeurM.add(radioBtnAutreM);
 
         buttonGroupCodeStatut.add(radioBtnMarieM);
         buttonGroupCodeStatut.add(radioBtnCelibataireM);
@@ -177,13 +194,6 @@ public class FenetreModifierVip extends javax.swing.JDialog {
 
         jLabel9.setText("Pays");
 
-        txtPays.setText("USA");
-        txtPays.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPaysActionPerformed(evt);
-            }
-        });
-
         btnCreerVip.setText("Modifier");
         btnCreerVip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,6 +231,19 @@ public class FenetreModifierVip extends javax.swing.JDialog {
 
         jLabel8.setText("Code statut");
 
+        radioBtnAutreM.setText("Autre");
+
+        try{
+            jComboBoxPays.setModel(new ComboBoxModele(this.leDaoDivers.getPays()));
+        }
+        catch ( Exception E)
+        {
+
+        }
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Modifier un Vip");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,57 +253,55 @@ public class FenetreModifierVip extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radioBtnMrM)
+                                .addGap(18, 18, 18)
+                                .addComponent(radioBtnMmeM))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtLieuxNaissance, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtDateNaissance, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtNumVip, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtPrenom, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtNom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxPays, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel4))
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(radioBtnMrM)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(radioBtnMmeM))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtPays, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtLieuxNaissance, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtDateNaissance, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtNumVip, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtPrenom, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtNom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                                         .addComponent(radioBtnActeurM)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(radioBtnRealisateurM))
+                                    .addComponent(radioBtnCelibataireM))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(radioBtnMarieM)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addComponent(radioBtnRealisateurM)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioBtnARM))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(radioBtnCelibataireM)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioBtnMarieM)
-                                .addGap(132, 132, 132))))
+                                        .addComponent(radioBtnARM)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(radioBtnAutreM))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(159, 159, 159)
-                        .addComponent(btnCreerVip)))
-                .addContainerGap())
+                        .addComponent(btnCreerVip))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(jLabel10)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addComponent(jLabel10)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -292,7 +313,7 @@ public class FenetreModifierVip extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNumVip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -306,23 +327,32 @@ public class FenetreModifierVip extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(txtLieuxNaissance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(radioBtnActeurM)
-                        .addComponent(radioBtnRealisateurM)
-                        .addComponent(radioBtnARM))
-                    .addComponent(jLabel7))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(radioBtnActeurM)
+                            .addComponent(radioBtnRealisateurM)
+                            .addComponent(radioBtnARM)
+                            .addComponent(radioBtnAutreM))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(radioBtnCelibataireM)
-                    .addComponent(radioBtnMarieM))
-                .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(radioBtnCelibataireM)
+                        .addComponent(radioBtnMarieM)))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(0, 19, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBoxPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCreerVip)
                 .addContainerGap())
         );
@@ -342,17 +372,13 @@ public class FenetreModifierVip extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomActionPerformed
 
-    private void txtPaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaysActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPaysActionPerformed
-
     private void btnCreerVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreerVipActionPerformed
       
         
        this.leVip.setNumVip(Integer.parseInt(txtNumVip.getText()));
        this.leVip.setNom(txtNom.getText());
        this.leVip.setPrenom(txtPrenom.getText());
-       this.leVip.setPays(txtPays.getText());
+       this.leVip.setPays((String) this.jComboBoxPays.getSelectedItem());
          String civilitee ;
        
        if ( radioBtnMrM.isSelected()) {
@@ -434,7 +460,9 @@ public class FenetreModifierVip extends javax.swing.JDialog {
     private javax.swing.ButtonGroup buttonGroupCM;
     private javax.swing.ButtonGroup buttonGroupCodeActeurM;
     private javax.swing.ButtonGroup buttonGroupCodeStatut;
+    private javax.swing.JComboBox jComboBoxPays;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -445,6 +473,7 @@ public class FenetreModifierVip extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JRadioButton radioBtnARM;
     private javax.swing.JRadioButton radioBtnActeurM;
+    private javax.swing.JRadioButton radioBtnAutreM;
     private javax.swing.JRadioButton radioBtnCelibataireM;
     private javax.swing.JRadioButton radioBtnMarieM;
     private javax.swing.JRadioButton radioBtnMmeM;
@@ -454,7 +483,6 @@ public class FenetreModifierVip extends javax.swing.JDialog {
     private javax.swing.JTextField txtLieuxNaissance;
     private javax.swing.JTextField txtNom;
     private javax.swing.JTextField txtNumVip;
-    private javax.swing.JTextField txtPays;
     private javax.swing.JTextField txtPrenom;
     // End of variables declaration//GEN-END:variables
 }

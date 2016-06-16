@@ -96,13 +96,32 @@ public class DAOVIP {
     
     public void supprimerVip(Vip leVip) throws SQLException
     {
-        String requete = " delete from VIP where numVip = ?";
         
-         PreparedStatement pstmt = connexion.prepareStatement(requete);
+          String requete = "delete from PhotoProfilVIP where numVip = ? ";
+      PreparedStatement  pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, leVip.getNumVip());
+        
+         
+         pstmt.executeUpdate();
+         
+         
+          requete = "delete from PhotoVIP where numVip = ? ";
+        pstmt = connexion.prepareStatement(requete);
+         pstmt.setInt(1, leVip.getNumVip());
+        
+         
+         pstmt.executeUpdate();
+         
+       requete = " delete from VIP where numVip = ?";
+        
+       pstmt = connexion.prepareStatement(requete);
          
          pstmt.setString(1,String.valueOf(leVip.getNumVip()));
          
          pstmt.executeUpdate();
+         
+    
+         
          pstmt.close();
          
          
@@ -121,7 +140,7 @@ public class DAOVIP {
               
               listeMariage.clear();
               
-              String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce IS NULL ";
+              String requete = " select nomVip, VIP.numVip, Evenement.numVipConjoint, Evenement.numVip, Evenement.dateMariage from Evenement, VIP where (VIP.numVip = Evenement.numVip OR VIP.numVip = Evenement.numVipConjoint) AND Evenement.dateDivorce IS NULL ";
               
               PreparedStatement pstmt = connexion.prepareStatement(requete);
               
@@ -137,19 +156,19 @@ public class DAOVIP {
                   if ( i%2 == 0)
                   {
                       
-                       listeItems.add(rset.getString(1).concat("-"+String.valueOf(rset.getInt(2))));
+                       listeItems.add(rset.getString(1).concat("_"+String.valueOf(rset.getInt(2))));
                        i++ ;
                        
-                        Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3)));
+                        Mariage mariage = (new Mariage(rset.getInt(4),rset.getInt(3),rset.getString(5)));
                  
                
-                  listeMariage.add(new Mariage(rset.getInt(4),rset.getInt(3))) ;
+                  listeMariage.add(mariage) ;
                       
                   }
                   else
                   {
                       
-                    listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("-"+String.valueOf(rset.getInt(2)))));
+                    listeItems.set(i-listeItems.size(),listeItems.get(i-listeItems.size()).concat(" et " +rset.getString(1).concat("_"+String.valueOf(rset.getInt(2)))));
                       
                     i++ ;
                   }
@@ -183,17 +202,18 @@ public class DAOVIP {
     
     
     
-    public void divorcerVip(Mariage mariage, String date) throws SQLException
+    public void divorcerVip(Mariage mariage, String dateD) throws SQLException
     {
         
         
-        String requete = "Update Evenement set dateDivorce = ?  Where Evenement.numVIP = ? and Evenement.numVIPConjoint = ? " ;
+        String requete = "Update Evenement set dateDivorce = ?  Where Evenement.numVIP = ? and Evenement.numVIPConjoint = ? and dateMariage = ? " ;
         
         PreparedStatement pstmt = connexion.prepareStatement(requete);
         
-        pstmt.setString(1,date);
+        pstmt.setString(1,dateD);
         pstmt.setInt(2, mariage.getNumVip());
         pstmt.setInt(3, mariage.getNumVipConjoint());
+        pstmt.setString(4, mariage.getDate());
         
         
         pstmt.executeUpdate();
@@ -250,7 +270,7 @@ public class DAOVIP {
                   
                   
                   
-                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  listeItem.add(nom +"_"+ String.valueOf(num));
                   
                   
                   
@@ -464,7 +484,7 @@ public class DAOVIP {
                   
                 
                   
-                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  listeItem.add(nom +"_"+ String.valueOf(num));
                   
                   
                   
@@ -511,7 +531,7 @@ public class DAOVIP {
                   
                 
                   
-                  listeItem.add(nom +"-"+ String.valueOf(num));
+                  listeItem.add(nom +"_"+ String.valueOf(num));
                   
                   
                   
@@ -529,8 +549,32 @@ public class DAOVIP {
                 
                 
     }
+        
+  
+        
+    public int getDernierNumero() throws SQLException
+    {
+          String requete = "select MAX(numVIP) from VIP ";
+              
+             
+             
+              
+              PreparedStatement pstmt = connexion.prepareStatement(requete);
+              
+              ResultSet rset = pstmt.executeQuery() ;
+              
+              
+              int numero = 0;
+              
+              while(rset.next())
+              {
+              
+              numero = rset.getInt(1);
+              }
+              
+              return numero ;
+        
+    }
      
-     
-    
 }
-
+    
